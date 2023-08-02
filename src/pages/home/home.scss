@@ -1,6 +1,6 @@
 @font-face {
-    font-family: 'Circle'; /* Font family name you can use in the 'font-family' property */
-    src: local("Circle"), url('../../fonts/circle.ttf') format('truetype'); /* Adjust the path as needed */
+    font-family: 'Circle Black';
+    src: local('Circle Black'), url('../../fonts/CircularStd-Black.otf') format('opentype'); /* Adjust the path to the lighter font */
 }
 
 .home{ 

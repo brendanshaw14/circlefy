@@ -1,5 +1,5 @@
 import "./login.scss"
-//import React, { useEffect } from 'react';
+import Circle from "../../components/circle"
 
 // Global variables to store Spotify API details
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
@@ -7,6 +7,7 @@ const redirectUri = 'http://localhost:3000/home/';
 const scope = ['user-top-read', 'user-library-read','user-follow-read']; // Add more scopes as needed
 
 const Login = () => {
+    
     /****************Authentication Functions Here****************/
     const handleLogin = () =>{ 
         //initiates spotify authentification 
@@ -51,12 +52,25 @@ const Login = () => {
             return base64encode(digest);
         }
     }
+
     return (
     <div className="login">
-      <h1 className="title">Circlefy</h1>
-      <button className="login-button" onClick={handleLogin}>
-        Login with Spotify
-      </button>
+        <header className="header-container"> 
+            <h1 className="title">Circlefy</h1>
+        </header>
+        <main className="body-container"> 
+            <div className="circle-container">
+                <Circle color="#ff59b5" text="Circle 1" />
+                <Circle color="#ff9f3d" text="Circle 2" />
+                <Circle color="#a8df85" text="Circle 3" />
+            </div>
+            <div className="button-container">
+                <button className="login-button" onClick={handleLogin}>Login with Spotify</button>
+            </div>
+        </main>
+        <footer>
+        </footer> 
+      
     </div>
   );
 };

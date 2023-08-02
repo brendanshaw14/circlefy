@@ -6,9 +6,9 @@ const redirectUri = 'http://localhost:3000/home/';
 
 const Home = () => {
 
-    const accessToken = localStorage.getItem('access_token');
+    let accessToken = localStorage.getItem('access_token');
     if (!accessToken){
-        getAccessToken();
+        getAccessToken(accessToken);
     }
     else if (!verifyAccessToken(accessToken)){
         console.log("token expired")
@@ -20,42 +20,30 @@ const Home = () => {
 
     function verifyAccessToken() {
         const expires_at = localStorage.getItem('expires_at');
-      
         // Parse the expiration time from ISO 8601 format
         const expirationTimestamp = Date.parse(expires_at);
-  
         // Get the current timestamp
         const currentTimestamp = Date.now();
-
         // Compare the current timestamp with the expiration timestamp
         return currentTimestamp <= expirationTimestamp;
     }
-      
+     // Function to be executed when local storage changes
+    if (accessToken) {
+        getProfile(accessToken)
+        .then(data => {
+            console.log(data);
+        })
+        .catch(error => {
+            console.error('Error fetching data:', error);
+        });
+        }
+    else{
+            console.log('Error retrieving access token');
+    } 
+  
+  
 
-    //if (accessToken) {
-        //getProfile(accessToken)
-        //.then(data => {
-            //console.log(data);
-        //})
-        //.catch(error => {
-            //console.error('Error fetching data:', error);
-        //});
-        //}
-    //else{
-            //console.log('Error retrieving access token');
-    //}
-    ////profile data retreive definition
-    //async function getProfile(accessToken) {
-        //const response = await fetch('https://api.spotify.com/v1/me', {
-        //headers: {
-            //Authorization: 'Bearer ' + accessToken
-        //}
-        //});
-        //const data = await response.json();
-        //return data; // Return the user's data from the Spotify API
-    //}
-
-
+   
     //fetch('https://api.spotify.com/v1/me/top/tracks', {
     //headers: {
         //'Authorization': 'Bearer ' + accessToken
@@ -84,7 +72,7 @@ const Home = () => {
 
 export default Home
 
-async function getAccessToken(){
+async function getAccessToken(accessToken){
     const urlParams = new URLSearchParams(window.location.search);    
     let code = urlParams.get('code');
     let codeVerifier = localStorage.getItem('code_verifier');
@@ -113,9 +101,10 @@ async function getAccessToken(){
     .then(data => {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
-        localStorage.setItem('expires_in', 3);
+        localStorage.setItem('expires_in', data.expires_in);
+        accessToken = localStorage.getItem(data.accessToken);
         // Calculate the expiration time in milliseconds from the 'expires_in' value
-        const expiresInMilliseconds = data.expires_in * 1000;
+        const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
         // Calculate the expiration timestamp and save it in local storage
         const expirationTimestamp = Date.now() + expiresInMilliseconds;
         localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
@@ -155,36 +144,21 @@ async function refreshAccessToken() {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
-        //localStorage.setItem('expires_in', data.expires_in);
       })
       .catch((error) => {
         console.error('Error refreshing access token:', error);
       });
   }
   
+     //profile data retreive definition
+    async function getProfile(accessToken) {
+        const response = await fetch('https://api.spotify.com/v1/me', {
+        headers: {
+            Authorization: 'Bearer ' + accessToken
+        }
+        });
+        const data = await response.json();
+        return data; // Return the user's data from the Spotify API
+    }
 
-//if (accessToken) {
-    //getProfile(accessToken)
-        //.then(data => {
-            //console.log(data);
-        //})
-        //.catch(error => {
-            //console.error('Error fetching data:', error);
-        //});
-    //}
-    //else{
-            //console.log('Error retrieving access token');
-    //}
-  // Function to get Spotify data
-  //  async function getProfile(accessToken) {
-        //const response = await fetch('https://api.spotify.com/v1/me', {
-        //headers: {
-            //Authorization: 'Bearer ' + accessToken
-        //}
-        //});
-        //const data = await response.json();
-        //return data; // Return the user's data from the Spotify API
-    //}
-   //for (const [key, value] of body.entries()) {
-        //console.log(`${key}: ${value}`);
-    //}
+

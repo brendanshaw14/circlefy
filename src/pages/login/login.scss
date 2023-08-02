@@ -1,40 +1,72 @@
-@font-face {
-        font-family: 'Circle'; /* Font family name you can use in the 'font-family' property */
-        src: local("Circle"), url('../../fonts/circle.ttf') format('truetype'); /* Adjust the path as needed */
-}
+/* styles.scss */
 
-.login {
-        font-family: 'Circle';
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 40vh;
-        background-color:rgb(57, 57, 57);
-} 
-  
-    .title-container {
-        margin-bottom: 100px; /* Add spacing between the title and button */
-    }
-  
-    .title {
-        font-size: 100px;
-    }
-  
-    .button-container {
-        display: flex;
-        justify-content: center; /* Center the button horizontally within the container */
-    }
-  
-    .login-button {
-        width: 400;
-        height: 400;
-        background-color: #1dcc4c;
-        color: #ffffff;
-        font-size: 60px;
-        border: none;
-        cursor: pointer;
-        outline:rgb(57, 57, 57);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-        /* Add any other button styling as needed */
+/* Font-Face Definitions */
+@font-face {
+    font-family: 'Circle Black';
+    src: local('Circle Black'), url('../../fonts/CircularStd-Black.otf') format('opentype');
   }
+  
+  @font-face {
+    font-family: 'Circle Light';
+    src: local('Circle Light'), url('../../fonts/CircularStd-Light.otf') format('opentype');
+  }
+  
+  /* Global Styles */
+  :root {
+    background-color: #151515;
+  }
+  
+  /* Login Section */
+  .login {
+    font-family: 'Circle Black';
+  
+  
+  /* Header Section */
+  .header-container {
+    margin-bottom: 50px;
+    padding: 20px;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgb(255, 255, 255);
+  
+    /* Styles for the title within the header */
+    .title {
+      font-family: 'Circle Black';
+      font-size: 100px;
+      color: rgb(255, 255, 255);
+    }
+  }
+  
+  /* Body Section */
+  .body-container {
+    /* Styles for the .circle-container */
+    .circle-container {
+      display: flex;
+      justify-content: space-around;
+    }
+  
+    /* Styles for the .button-container */
+    .button-container {
+      margin-bottom: 50px;
+      padding: 20px;
+      width: 100%;
+      height: 150px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgb(255, 255, 255);
+    }
+  
+    /* Styles for the .login-button */
+    .login-button {
+      font-size: 40px;
+      background-color: #1dcc4c;
+      color: #ffffff;
+      cursor: pointer;
+      border-radius: 100px;
+    }
+  }
+} 
