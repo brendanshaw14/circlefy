@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'Circle'; /* Font family name you can use in the 'font-family' property */
+    src: local("Circle"), url('../../fonts/circle.ttf') format('truetype'); /* Adjust the path as needed */
+}
+
+.home{ 
+    color: rgb(255, 255, 255);
+    font-family: 'Circle';
+    background-color:rgb(53, 53, 53);
+    display: flex;
+    align-items: center;
+}
