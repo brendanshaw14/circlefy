@@ -4,69 +4,75 @@
 @font-face {
     font-family: 'Circle Black';
     src: local('Circle Black'), url('../../fonts/CircularStd-Black.otf') format('opentype');
-  }
+}
   
-  @font-face {
+@font-face {
     font-family: 'Circle Light';
     src: local('Circle Light'), url('../../fonts/CircularStd-Light.otf') format('opentype');
-  }
+}
   
-  /* Global Styles */
-  :root {
+/* Global Styles */
+:root {
     background-color: #151515;
-  }
+}
   
-  /* Login Section */
-  .login {
+/* Login Section */
+.login {
     font-family: 'Circle Black';
+    overflow-x: hidden;
   
   
-  /* Header Section */
-  .header-container {
+/* Header Section */
+.header-container {
     margin-bottom: 50px;
-    padding: 20px;
     width: 100%;
     height: 150px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid rgb(255, 255, 255);
   
     /* Styles for the title within the header */
     .title {
-      font-family: 'Circle Black';
-      font-size: 100px;
-      color: rgb(255, 255, 255);
+        font-family: 'Circle Black';
+        font-size: 100px;
+        color: rgb(255, 255, 255);
     }
-  }
+}
   
-  /* Body Section */
-  .body-container {
+/* Body Section */
+.body-container {
     /* Styles for the .circle-container */
     .circle-container {
-      display: flex;
-      justify-content: space-around;
+        display: flex;
+        justify-content: space-around;
     }
   
     /* Styles for the .button-container */
-    .button-container {
-      margin-bottom: 50px;
-      padding: 20px;
-      width: 100%;
-      height: 150px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid rgb(255, 255, 255);
+     .button-container {
+        margin-bottom: 50px;
+        width: 100%;
+        height: 150px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
   
     /* Styles for the .login-button */
     .login-button {
-      font-size: 40px;
-      background-color: #1dcc4c;
-      color: #ffffff;
-      cursor: pointer;
-      border-radius: 100px;
+        height: 70px;
+        width: 300px;
+        font-family: "Circle Black";
+        font-size: 25px;
+        background-color: #1dcc4c;
+        color: #000000;
+        cursor: pointer;
+        border-radius: 150px;
+        border: none;
     }
-  }
+    /* Apply styles when hovering over the .login-button */
+    .login-button:hover {
+        transform: scale(1.1); /* Enlarge the button by 10% on hover */
+        border: 2px solid white; /* Add a white border on hover */
+    }
 } 
+}

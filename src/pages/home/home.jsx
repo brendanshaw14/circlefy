@@ -6,6 +6,7 @@ const redirectUri = 'http://localhost:3000/home/';
 
 const Home = () => {
 
+
     let accessToken = localStorage.getItem('access_token');
     if (!accessToken){
         getAccessToken(accessToken);
@@ -27,6 +28,7 @@ const Home = () => {
         // Compare the current timestamp with the expiration timestamp
         return currentTimestamp <= expirationTimestamp;
     }
+
      // Function to be executed when local storage changes
     if (accessToken) {
         getProfile(accessToken)
@@ -44,24 +46,24 @@ const Home = () => {
   
 
    
-    //fetch('https://api.spotify.com/v1/me/top/tracks', {
-    //headers: {
-        //'Authorization': 'Bearer ' + accessToken
-    //}
-    //})
-    //.then(response => {
-        //if (!response.ok) {
-        //throw new Error('HTTP status ' + response.status);
-        //}
-        //return response.json();
-    //})
-    //.then(data => {
-        //// Process the user's top artists data here
-        //console.log(data);
-    //})
-    //.catch(error => {
-        //console.error('Error fetching data:', error);
-    //});
+    fetch('https://api.spotify.com/v1/me/top/tracks', {
+    headers: {
+        'Authorization': 'Bearer ' + accessToken
+    }
+    })
+    .then(response => {
+        if (!response.ok) {
+        throw new Error('HTTP status ' + response.status);
+        }
+        return response.json();
+    })
+    .then(data => {
+        // Process the user's top artists data here
+        console.log(data);
+    })
+    .catch(error => {
+        console.error('Error fetching data:', error);
+    });
     
     return (
         <div className="home">

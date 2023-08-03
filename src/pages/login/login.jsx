@@ -60,7 +60,10 @@ const Login = () => {
         </header>
         <main className="body-container"> 
             <div className="circle-container">
-                <Circle color="#ff59b5" text="Circle 1" />
+                <Circle color="#ff59b5" size = "200" image="images/KaliUchis-Isolation.png" />
+                <Circle color="#ff59b5" size = "200" image="images/DuaLipa-FutureNostalgia.jpg" />
+                <Circle color="#ff59b5" size = "200" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
+                <Circle color="#ff59b5" size = "200" image="images/TravisScott-Astroworld.png"/>
                 <Circle color="#ff9f3d" text="Circle 2" />
                 <Circle color="#a8df85" text="Circle 3" />
             </div>
