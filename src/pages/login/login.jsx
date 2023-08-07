@@ -61,11 +61,14 @@ const Login = () => {
         <main className="body-container"> 
             <div className="circle-container">
                 <Circle color="#ff59b5" size = "200" image="images/KaliUchis-Isolation.png" />
-                <Circle color="#ff59b5" size = "200" image="images/DuaLipa-FutureNostalgia.jpg" />
+                <Circle color="#ff59b5" size = "200" image="images/DuaLipa-FutureNostalgia.png" />
                 <Circle color="#ff59b5" size = "200" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
                 <Circle color="#ff59b5" size = "200" image="images/TravisScott-Astroworld.png"/>
-                <Circle color="#ff9f3d" text="Circle 2" />
-                <Circle color="#a8df85" text="Circle 3" />
+                <Circle color="#ff59b5" size = "200" /> 
+                <Circle color="#ff9f3d" size = "200" text="Your Wrapped, Year Round, plus some more bs text" />
+                <Circle color="#a8df85" size = "200" text="Circle 3" x = "400" y = "400" /> }
+                <Circle color="#399fec" size = "200" text="Circle 3" />
+                <Circle color="#ffe80b" size = "200" text="Circle 3" />
             </div>
             <div className="button-container">
                 <button className="login-button" onClick={handleLogin}>Login with Spotify</button>
