@@ -41,13 +41,12 @@
   
 /* Body Section */
 .body-container {
+
     /* Styles for the .circle-container */
     .circle-container {
-        display: flex;
-        height: 60vh;
-        width: 100%;
-        justify-content: space-around;
         position: relative;
+        width: 100%;
+        height: 60vh;
     }
   
     /* Styles for the .button-container */

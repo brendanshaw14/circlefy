@@ -60,14 +60,14 @@ const Login = () => {
         </header>
         <main className="body-container"> 
             <div className="circle-container">
-                <Circle color="#ff59b5" x = '20' y = '20' size = "40" image="images/KaliUchis-Isolation.png" />
-                <Circle color="#ff59b5" x = '50' y = '20' size = "20" image="images/DuaLipa-FutureNostalgia.png" />
-                <Circle color="#ff59b5" x = '70' y = '20' size = "40" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
-                {/*<Circle color="#ff59b5" size = "20" image="images/TravisScott-Astroworld.png"/>
-                <Circle color="#ff59b5" size = "20" /> 
-                <Circle color="#ff9f3d" size = "20" text="Your Wrapped, Year Round " />
-                <Circle color="#a8df85" size = "20" text="Circle 3" />
-    <Circle color="#399fec" size = "20" text="Circle 3" />*/}
+                <Circle color="#ff59b5" x = '50' y = '50' size = "30" image="images/KaliUchis-Isolation.png" />
+                {/*<Circle color="#ff59b5" x = '50' y = '20' size = "10" image="images/DuaLipa-FutureNostalgia.png" />
+                <Circle color="#ff59b5" x = '70' y = '20' size = "10" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
+                <Circle color="#ff59b5" x = '70' y = '20' size = "10" image="images/TravisScott-Astroworld.png"/>
+                <Circle color="#ff59b5" size = "10" /> 
+                <Circle color="#ff9f3d" size = "50" text="Your Spotify Wrapped, All Year Round " />
+                <Circle color="#a8df85" size = "10" text="Circle 3" />
+    <Circle color="#399fec" size = "10" text="Circle 3" />*/}
             </div>
             <div className="button-container">
                 <button className="login-button" onClick={handleLogin}>Login with Spotify</button>
