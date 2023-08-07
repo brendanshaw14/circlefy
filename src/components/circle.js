@@ -1,33 +1,47 @@
 import React from 'react';
 
-const Circle = ({ color = "#000000", size = 100, image, text, scale = 1 }) => {
+const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1 }) => {
     const isImage = !!image;
 
-    // Calculate the new x and y positions to center the image
-    const x = (size - size * scale) / 2;
-    const y = (size - size * scale) / 2;
+    // Convert percentage values to actual pixel values
+    const actualX = `${x}%`;
+    const actualY = `${y}%`;
+    const actualSize = Math.min(window.innerWidth, window.innerHeight) * (size/ 100);
 
     return (
-        <svg width={size} height={size}>
+        <svg x={actualX} y={actualY} width={actualSize} height={actualSize}>
             <defs>
-                <clipPath id={'circle-clip'}>
-                    <circle cx={size / 2} cy={size / 2} r={size / 2} />
+                <clipPath id={`circle-clip-${actualX}-${actualY}`}>
+                    <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
                 </clipPath>
             </defs>
-            <circle cx={size / 2} cy={size / 2} r={size / 2} fill={color} />
+            <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} />
             {isImage ? (
                 <image
-                    x={x}
-                    y={y}
-                    width={size * scale}
-                    height={size * scale}
+                    x={(actualSize-actualSize*scale)/2}
+                    y={(actualSize-actualSize*scale)/2}
+                    width={actualSize*scale}
+                    height={actualSize*scale}
                     href={image}
-                    clipPath={`url(#${'circle-clip'})`}
+                    clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                 />
             ) : (
-                <foreignObject x={x} y={y} width={size * scale} height={size * scale}>
-                    <div xmlns="http://www.w3.org/1999/xhtml" style={{ width: '100%', height: '100%', overflowWrap: 'break-word' }}>
-                        <p style={{ textAlign: 'center', color: 'white', fontSize: '16px' }}>
+                <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
+                    <div
+                        xmlns="http://www.w3.org/1999/xhtml"
+                        style={{
+                            position: 'absolute',
+                            width: '100%',
+                            height: '100%',
+                            overflowWrap: 'break-word',
+                            color: 'white',
+                            textAlign: 'center',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '20px'
+                        }}
+                    >
+                        <p>
                             {text}
                         </p>
                     </div>
