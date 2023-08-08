@@ -60,13 +60,16 @@ const Login = () => {
         </header>
         <main className="body-container"> 
             <div className="circle-container">
-                <Circle color="#ff59b5" x = '50' y = '100' size = "20" image="images/KaliUchis-Isolation.png" />
-                {/*<Circle color="#ff59b5" x = '50' y = '20' size = "10" image="images/DuaLipa-FutureNostalgia.png" />
-                <Circle color="#ff59b5" x = '70' y = '20' size = "10" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
-                <Circle color="#ff59b5" x = '70' y = '20' size = "10" image="images/TravisScott-Astroworld.png"/>
-                <Circle color="#ff59b5" size = "10" /> 
-                <Circle color="#ff9f3d" size = "50" text="Your Spotify Wrapped, All Year Round " />
-                <Circle color="#a8df85" size = "10" text="Circle 3" />
+                <Circle x = '12' y = '15' size = '40' color="#ff9f3d" text="Your Spotify Wrapped, All Year Round " />
+                <Circle x = '80' y = '30' sisze = '20' color="#ff59b5"/> 
+                <Circle x = '80' y = '75' size = "23" image="images/KaliUchis-Isolation.png" />
+                <Circle x = '49' y = '5' size = "20" image="images/DuaLipa-FutureNostalgia.png" />
+                <Circle x = '5' y = '0' size = "15" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
+                <Circle x = '45' y = '75' size = "15" image="images/TravisScott-Astroworld.png"/>
+                <Circle x = '53' y = '40' size = '35' color="#ff59b5" text="piss"/> 
+                <Circle x = '12' y = '65' size = '25' color="#399fec" text="Circle 3" />
+                <Circle x = '75' y = '0' size = '30' color="#a8df85" text="Circle 4" />
+                {/*<Circle color="#a8df85" size = "10" text="Circle 3" />
     <Circle color="#399fec" size = "10" text="Circle 3" />*/}
             </div>
             <div className="button-container">
