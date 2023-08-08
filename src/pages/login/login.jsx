@@ -60,15 +60,15 @@ const Login = () => {
         </header>
         <main className="body-container"> 
             <div className="circle-container">
-                <Circle x = '12' y = '15' size = '40' color="#ff9f3d" text="Your Spotify Wrapped, All Year Round " />
-                <Circle x = '80' y = '30' sisze = '20' color="#ff59b5"/> 
-                <Circle x = '80' y = '75' size = "23" image="images/KaliUchis-Isolation.png" />
-                <Circle x = '49' y = '5' size = "20" image="images/DuaLipa-FutureNostalgia.png" />
-                <Circle x = '5' y = '0' size = "15" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
-                <Circle x = '45' y = '75' size = "15" image="images/TravisScott-Astroworld.png"/>
-                <Circle x = '53' y = '40' size = '35' color="#ff59b5" text="piss"/> 
-                <Circle x = '12' y = '65' size = '25' color="#399fec" text="Circle 3" />
-                <Circle x = '75' y = '0' size = '30' color="#a8df85" text="Circle 4" />
+                <Circle x = '35' y = '40' size = '40' color="#ff9f3d" text="Your Spotify Wrapped, All Year Round " />
+                <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
+                <Circle x = '90' y = '80' size = "10" image="images/KaliUchis-Isolation.png" />
+                <Circle x = '60' y = '15' size = "10" image="images/DuaLipa-FutureNostalgia.png" />
+                <Circle x = '10' y = '10' size = "8" image="images/Khalid-AmericanTeen.jpg" scale = "1.045"/>
+                <Circle x = '55' y = '80' size = "12" image="images/TravisScott-Astroworld.png"/>
+                <Circle x = '70' y = '70' size = '20' color="#ff59b5" text="piss"/> 
+                <Circle x = '12' y = '75' size = '15' color="#399fec" text="Circle 3" />
+                <Circle x = '80' y = '30' size = '20' color="#a8df85" text="Circle 4" />
                 {/*<Circle color="#a8df85" size = "10" text="Circle 3" />
     <Circle color="#399fec" size = "10" text="Circle 3" />*/}
             </div>

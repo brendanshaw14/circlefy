@@ -4,14 +4,15 @@ const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scal
     const isImage = !!image;
 
     // Convert percentage values to actual pixel values
-    const stretch = visualViewport.width/visualViewport.height;
+    const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
+    console.log(stretch);
 
     const actualX = (x / 100) * visualViewport.width;
     const actualY = (y / 100) * visualViewport.height*0.6;
-    const actualSize = stretch* visualViewport.height*0.6 * (size / 100);
+    const actualSize = stretch*(size / 100)*visualViewport.height;
 
     return (
-        <svg style={{ position: 'absolute', left: actualX, top: actualY }} width={actualSize} height={actualSize}>
+        <svg style={{ position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
             <defs>
                 <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                     <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
