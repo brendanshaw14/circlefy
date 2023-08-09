@@ -1,4 +1,8 @@
 import "./home.scss"
+import Circle from "../../components/circle"
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+
 
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
@@ -46,7 +50,7 @@ const Home = () => {
   
 
    
-    fetch('https://api.spotify.com/v1/me/top/tracks', {
+    fetch('https://api.spotify.com/v1/me/top/artists', {
     headers: {
         'Authorization': 'Bearer ' + accessToken
     }
@@ -60,6 +64,27 @@ const Home = () => {
     .then(data => {
         // Process the user's top artists data here
         console.log(data);
+        // Process the user's top artists data here
+        const topArtists = data.items.slice(0, 5); // Get top 5 artists
+    
+        const profilePhotoUrls = topArtists.map(artist => artist.images[0]?.url);
+    
+        // Now you have an array of profile photo URLs
+        console.log(profilePhotoUrls);
+        createRoot(document.querySelector('.circle-container')).render(
+            <div>
+            <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
+            <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text="Your Spotify Wrapped, All Year Round " />
+            <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
+            <Circle x = '60' y = '15' size = "15" image={profilePhotoUrls[1]} />
+            <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} scale = "1.045"/>
+            <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
+            <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
+            <Circle x = '12' y = '75' size = '15' color="#399fec"  />
+            <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
+            <Circle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>);
+            </div>, 
+        );
     })
     .catch(error => {
         console.error('Error fetching data:', error);
@@ -67,9 +92,18 @@ const Home = () => {
     
     return (
         <div className="home">
-            <h1 className = "title">Home</h1>
+            <header className="header-container"> 
+                <h1 className="title">Circlefy</h1>
+            </header>
+            <main className="body-container"> 
+                <div className="circle-container">
+                                    </div>
+            </main>
+            <footer>
+            </footer> 
+          
         </div>
-    )
+      );
 }
 
 export default Home

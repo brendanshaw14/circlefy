@@ -68,7 +68,7 @@ const Login = () => {
                 <Circle x = '55' y = '80' size = "12" image="images/TravisScott-Astroworld.png"/>
                 <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
                 <Circle x = '12' y = '75' size = '15' color="#399fec" text="" />
-                <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
+                <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more 4" />
                 <Circle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>
             </div>
             <div className="button-container">
