@@ -75,8 +75,23 @@ const Login = () => {
                 <button className="login-button" onClick={handleLogin}>Login with Spotify</button>
             </div>
         </main>
-        <footer>
-        </footer> 
+        <footer className="footer-container">
+             <div className="name">
+                <span>by Brendan Shaw</span>
+            </div>
+            <div className="github">
+                <a href="https://github.com/brendanshaw14" target="_blank" rel="noopener noreferrer" className="link">
+                    <img src="/images/github.png" alt="GitHub" className="github-icon" />
+                    GitHub
+                </a>
+            </div>
+            <div className="linkedIn">
+                <a href="https://www.linkedin.com/in/brendanshaw14" target="_blank" rel="noopener noreferrer" className="link">
+                    <img src="/images/linkedin.png" alt="LinkedIn" className="linkedIn-icon" />
+                    LinkedIn
+                </a>
+            </div>
+        </footer>
       
     </div>
   );

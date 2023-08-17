@@ -56,7 +56,8 @@
     /* Styles for the .button-container */
     .button-container {
         width: 100%;
-        height: 10vh;
+        height: 15vh;
+        margin-bottom: 5vh;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -79,4 +80,40 @@
         border: 2px solid white; /* Add a white border on hover */
     }
 } 
+.footer-container {
+    width: 100%;
+    height:10vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: 'Circle Light';
+    position: relative;
+    color: rgb(179, 179, 179);
+    background-color: transparent;
+    bottom: 0;
+
+    .name,
+    .github,
+    .linkedIn {
+        display: flex;
+        align-items: center;
+        padding: 0 10px; 
+        .link{
+            text-decoration: none;
+            color: rgb(179, 179, 179);
+            img {
+                transform: translateY(-3px); /* You can adjust the value to fine-tune the alignment */
+                vertical-align: middle;
+            }
+        }
+    }
+
+    .github-icon,
+    .linkedIn-icon{
+        margin-right: 5px;
+        width:2vw;
+        height: auto;
+    }
+}
+
 }

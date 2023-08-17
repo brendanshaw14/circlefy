@@ -18,9 +18,9 @@
   
 /* Login Section */
 .home {
+    background: linear-gradient(to bottom right, #656565, #3a3a3a00, #000000);
     font-family: 'Circle Black';
     overflow-x: hidden;
-    background: linear-gradient(to bottom right, #656565, #3a3a3a00, #000000);
   
 /* Header Section */
 .header-container {
@@ -61,19 +61,38 @@
     }
 } 
 
-.footer-container{
-    height: 10vh;
+.footer-container {
     width: 100%;
-    position: relative; 
+    height:10vh;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: 'Circle Light';
+    position: fixed;
+    color: rgb(179, 179, 179);
+    background-color: transparent;
+    bottom: 0;
 
-    .footer-content{
-        font-family: 'Circle Light';
-        color: rgb(179, 179, 179);
+    .name,
+    .github,
+    .linkedIn {
         display: flex;
-        font-size: 2vw;
-        margin-left: 5vw;
+        align-items: center;
+        padding: 0 10px; /* Add horizontal padding */
+        .link{
+            text-decoration: none;
+            color: rgb(179, 179, 179);
+        }
+    }
+
+    .github-icon,
+    .linkedIn-icon{
+        margin-right: 5px;
+        width:2vw;
+        height: auto;
     }
 }
+
 
 }
 
