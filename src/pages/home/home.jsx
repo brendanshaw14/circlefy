@@ -6,12 +6,12 @@ import { createRoot } from 'react-dom/client';
 
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
-
+let accessToken;
+let username;
 
 const Home = () => {
 
-
-    let accessToken = localStorage.getItem('access_token');
+    accessToken = localStorage.getItem('access_token');
     if (!accessToken){
         getAccessToken(accessToken);
     }
@@ -37,6 +37,7 @@ const Home = () => {
     if (accessToken) {
         getProfile(accessToken)
         .then(data => {
+            username = data.display_name;
             console.log(data);
         })
         .catch(error => {
@@ -46,8 +47,6 @@ const Home = () => {
     else{
             console.log('Error retrieving access token');
     } 
-  
-  
 
    
     fetch('https://api.spotify.com/v1/me/top/artists', {
@@ -74,7 +73,7 @@ const Home = () => {
         createRoot(document.querySelector('.circle-container')).render(
             <div>
             <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
-            <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text="Your Spotify Wrapped, All Year Round " />
+            <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text={`Hello, ${username}`}/> 
             <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
             <Circle x = '60' y = '15' size = "15" image={profilePhotoUrls[1]} />
             <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} scale = "1.045"/>
@@ -99,9 +98,12 @@ const Home = () => {
                 <div className="circle-container">
                                     </div>
             </main>
-            <footer>
-            </footer> 
-          
+            <footer className="footer-container">
+                <div className="footer-content">
+                    <span>by Brendan Shaw</span>
+                    
+                </div>
+            </footer>
         </div>
       );
 }
@@ -135,10 +137,10 @@ async function getAccessToken(accessToken){
         return response.json();
     })
     .then(data => {
+        accessToken = data.accessToken;
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
-        accessToken = localStorage.getItem(data.accessToken);
         // Calculate the expiration time in milliseconds from the 'expires_in' value
         const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
         // Calculate the expiration timestamp and save it in local storage

@@ -20,6 +20,7 @@
 .home {
     font-family: 'Circle Black';
     overflow-x: hidden;
+    background: linear-gradient(to bottom right, #656565, #3a3a3a00, #000000);
   
 /* Header Section */
 .header-container {
@@ -50,32 +51,29 @@
         position: relative;
         width: 100%;
         height: 60vh;
+        margin-bottom: 5vh;
     }
   
-    /* Styles for the .button-container */
-    .button-container {
-        width: 100%;
-        height: 10vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    .login-button {
-        height: 10vh;
-        width: 37vh;
-        margin-top: 5vh;
-        font-family: "Circle Black";
-        font-size: 25px;
-        background-color: #1dcc4c;
-        color: #000000;
-        cursor: pointer;
-        border-radius: 150px;
-        border: none;
-    }
     /* Apply styles when hovering over the .login-button */
     .login-button:hover {
         transform: scale(1.1); /* Enlarge the button by 10% on hover */
         border: 2px solid white; /* Add a white border on hover */
     }
 } 
+
+.footer-container{
+    height: 10vh;
+    width: 100%;
+    position: relative; 
+
+    .footer-content{
+        font-family: 'Circle Light';
+        color: rgb(179, 179, 179);
+        display: flex;
+        font-size: 2vw;
+        margin-left: 5vw;
+    }
 }
+
+}
+
