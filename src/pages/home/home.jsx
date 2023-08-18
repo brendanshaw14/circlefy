@@ -13,14 +13,15 @@ const Home = () => {
 
     accessToken = localStorage.getItem('access_token');
     if (!accessToken){
+        console.log("no access token, getting token");
         getAccessToken(accessToken);
     }
     else if (!verifyAccessToken(accessToken)){
-        console.log("token expired")
+        console.log("token expired: refreshing token")
         refreshAccessToken();
     }
     else{
-        console.log("token validated")
+        console.log("token exists and was validated")
     }
 
     function verifyAccessToken() {
@@ -75,8 +76,10 @@ const Home = () => {
             <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
             <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text={`Hello, ${username}`}/> 
             <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
-            <Circle x = '60' y = '15' size = "15" image={profilePhotoUrls[1]} />
-            <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} scale = "1.045"/>
+            <Circle x = '60' y = '18' size = "18" image={profilePhotoUrls[1]} style={{
+                animation: 'fade-in 2s ease-in', 
+              }}/>
+            <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} />
             <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
             <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
             <Circle x = '12' y = '75' size = '15' color="#399fec"  />
@@ -154,7 +157,8 @@ async function getAccessToken(accessToken){
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
         // Calculate the expiration time in milliseconds from the 'expires_in' value
-        const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+        //const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+        const expiresInMilliseconds = 10000;
         // Calculate the expiration timestamp and save it in local storage
         const expirationTimestamp = Date.now() + expiresInMilliseconds;
         localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
@@ -194,6 +198,12 @@ async function refreshAccessToken() {
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
+        // Calculate the expiration time in milliseconds from the 'expires_in' value
+        const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+        // Calculate the expiration timestamp and save it in local storage
+        const expirationTimestamp = Date.now() + expiresInMilliseconds;
+        localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
+        console.log("Data.expires in upon callin refresh access token: "+ data.expires_in);
       })
       .catch((error) => {
         console.error('Error refreshing access token:', error);
