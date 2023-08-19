@@ -1,24 +1,31 @@
 import "./home.scss"
 import Circle from "../../components/circle"
+import PopCircle from "../../components/popcircle"
 import React from 'react';
 import { createRoot } from 'react-dom/client';
 
 
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
-let username;
+
+let username; 
 
 const Home = () => {
     
     //call the init function to check and update the access token, then use the promise to fetch and store data  
     init()
     .then((accessToken) => {
-        console.log("accessToken:", accessToken);
+
         if (accessToken) {
             getProfile(accessToken)
             .then(data => {
                 username = data.display_name;
                 console.log(data);
+                createRoot(document.querySelector('.body-title-text')).render(
+                    <div>
+                        Hello, {username}. 
+                    </div>, 
+                );
             })
             .catch(error => {
                 console.error('Error fetching profile data:', error);
@@ -37,18 +44,8 @@ const Home = () => {
                 //render the circles with the artist names
                 createRoot(document.querySelector('.circle-container')).render(
                     <div>
-                    <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
-                    <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text={`Hello, ${username}`}/> 
-                    <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
-                    <Circle x = '60' y = '18' size = "18" image={profilePhotoUrls[1]} style={{
-                        animation: 'fade-in 2s ease-in', 
-                    }}/>
-                    <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} />
+                    <PopCircle x = '35' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
                     <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
-                    <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
-                    <Circle x = '12' y = '75' size = '15' color="#399fec"  />
-                    <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
-                    <Circle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>);
                     </div>, 
                 );
             })
@@ -70,9 +67,8 @@ const Home = () => {
                 <h1 className="title">Circlefy</h1>
             </header>
             <main className="body-container"> 
-                <div className="circle-container">
-                    {/* Your circle content */}
-                </div>
+                <div className="body-title-text"></div>
+                <div className="circle-container"></div>
             </main>
             <footer className="footer-container">
                 <div className="name">
@@ -151,7 +147,6 @@ async function getAccessToken() {
         // Calculate the expiration timestamp and save it in local storage
         const expirationTimestamp = Date.now() + expiresInMilliseconds;
         localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
-        console.log(data.access_token);
         return data.access_token;
     } catch (error) {
         console.error('Error:', error);

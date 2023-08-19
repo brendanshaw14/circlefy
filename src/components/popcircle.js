@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1}) => {
+const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1, delay = 0}) => {
     const isImage = !!image;
 
     // Convert percentage values to actual pixel values
@@ -10,8 +10,12 @@ const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scal
     const actualY = (y / 100) * visualViewport.height*0.6;
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
+    const animationStyle = {
+        animation: `fade-in 2s ease-in ${delay}s`, 
+    }
+
     return (
-        <svg style={{position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
+        <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
             <defs>
                 <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                     <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
@@ -49,4 +53,4 @@ const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scal
     );
 };
 
-export default Circle;
+export default PopCircle;
