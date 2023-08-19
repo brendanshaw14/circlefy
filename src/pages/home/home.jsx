@@ -10,64 +10,59 @@ let username;
 
 const Home = () => {
     
-//call the init function to check and update the access token, then use the promise to fetch and store data  
-init()
-  .then((accessToken) => {
-    console.log("accessToken:", accessToken);
-    if (accessToken) {
-        getProfile(accessToken)
-        .then(data => {
-            username = data.display_name;
-            console.log(data);
-        })
-        .catch(error => {
-            console.error('Error fetching data:', error);
-        });
-    }
-    else{
-            console.log('Error retrieving access token');
-    } 
-    //get the user's top artists
-    fetch('https://api.spotify.com/v1/me/top/artists', {
-    headers: {
-        'Authorization': 'Bearer ' + accessToken
-    }
-    })
-    .then(response => {
-        if (!response.ok) {
-        throw new Error('HTTP status ' + response.status);
+    //call the init function to check and update the access token, then use the promise to fetch and store data  
+    init()
+    .then((accessToken) => {
+        console.log("accessToken:", accessToken);
+        if (accessToken) {
+            getProfile(accessToken)
+            .then(data => {
+                username = data.display_name;
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('Error fetching profile data:', error);
+            });
         }
-        return response.json();
-    })
-    .then(data => {
-        //save the artist data
-        const topArtists = data.items; 
-        const profilePhotoUrls = topArtists.map(artist => artist.images[0]?.url); //save top artist images in array
-        //render the circles with the artist names
-        createRoot(document.querySelector('.circle-container')).render(
-            <div>
-            <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
-            <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text={`Hello, ${username}`}/> 
-            <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
-            <Circle x = '60' y = '18' size = "18" image={profilePhotoUrls[1]} style={{
-                animation: 'fade-in 2s ease-in', 
-            }}/>
-            <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} />
-            <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
-            <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
-            <Circle x = '12' y = '75' size = '15' color="#399fec"  />
-            <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
-            <Circle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>);
-            </div>, 
-        );
-    })
-    .catch(error => {
-        console.error('Error fetching data:', error);
+        else{
+                console.log('Error retrieving access token for profile data fetch');
+        } 
+        if (accessToken) {
+            getArtists(accessToken)
+            .then(data => {
+                console.log(data);
+                //save the artist data
+                const topArtists = data.items; 
+                const profilePhotoUrls = topArtists.map(artist => artist.images[0]?.url); //save top artist images in array
+                //render the circles with the artist names
+                createRoot(document.querySelector('.circle-container')).render(
+                    <div>
+                    <Circle x="95" y="80" size="20" image={profilePhotoUrls[0]} />,
+                    <Circle x = '35' y = '45' size = '40' color="#ff9f3d" text={`Hello, ${username}`}/> 
+                    <Circle x = '90' y = '30' sisze = '10' color="#ff59b5"/> 
+                    <Circle x = '60' y = '18' size = "18" image={profilePhotoUrls[1]} style={{
+                        animation: 'fade-in 2s ease-in', 
+                    }}/>
+                    <Circle x = '8' y = '10' size = "20" image={profilePhotoUrls[2]} />
+                    <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
+                    <Circle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
+                    <Circle x = '12' y = '75' size = '15' color="#399fec"  />
+                    <Circle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
+                    <Circle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>);
+                    </div>, 
+                );
+            })
+            .catch(error => {
+                console.error('Error fetching artist data:', error);
+            });
+        }
+        else{
+                console.log('Error retrieving access token for profile data fetch');
+        } 
+    }) 
+    .catch((error) => {
+        console.error("Error during initialization:", error);
     });
-  })
-  .catch((error) => {
-    console.error("Error during initialization:", error);
-  });
 
     return (
         <div className="home">
@@ -228,4 +223,16 @@ async function getProfile(accessToken) {
     const data = await response.json();
     return data; // Return the user's data from the Spotify API
 }
+
+//artist data retreive definition
+async function getArtists(accessToken) {
+    const response = await fetch('https://api.spotify.com/v1/me/top/artists', {
+    headers: {
+        Authorization: 'Bearer ' + accessToken
+    }
+    });
+    const data = await response.json();
+    return data; // Return the user's data from the Spotify API
+}
+
 

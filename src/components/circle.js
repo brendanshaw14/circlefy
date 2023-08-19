@@ -5,7 +5,6 @@ const Circle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scal
 
     // Convert percentage values to actual pixel values
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
-    console.log(stretch);
 
     const actualX = (x / 100) * visualViewport.width;
     const actualY = (y / 100) * visualViewport.height*0.6;
