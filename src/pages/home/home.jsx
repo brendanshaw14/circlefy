@@ -21,11 +21,6 @@ const Home = () => {
             .then(data => {
                 username = data.display_name;
                 console.log(data);
-                createRoot(document.querySelector('.body-title-text')).render(
-                    <div>
-                        Hello, {username}. 
-                    </div>, 
-                );
             })
             .catch(error => {
                 console.error('Error fetching profile data:', error);
@@ -40,12 +35,20 @@ const Home = () => {
                 console.log(data);
                 //save the artist data
                 const topArtists = data.items; 
-                const profilePhotoUrls = topArtists.map(artist => artist.images[0]?.url); //save top artist images in array
+                const profilePhotoUrls = topArtists.map(artist => artist.images[1]?.url); //save top artist images in array
                 //render the circles with the artist names
                 createRoot(document.querySelector('.intro-container')).render(
                     <div>
-                    <PopCircle x = '35' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-                    <PopCircle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]} delay='2'/>
+                    <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
+                    <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.2'/>
+                    <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.2'/>
+                    <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.2'/>
+                    <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[3]} delay='0.4'/>
+                    <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.6'/>
+                    <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[10]} delay='0.6'/>
+                    <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='0.6'/>
+                    <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='0.8'/>
+                    <PopCircle x = '75' y = '55' size = "27" image={profilePhotoUrls[0]} delay='0.8'/>
                     </div>, 
                 );
             })
@@ -143,7 +146,8 @@ async function getAccessToken() {
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
         // Calculate the expiration time in milliseconds from the 'expires_in' value
-        const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+        //const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+        const expiresInMilliseconds = 1 * 1000;
         // Calculate the expiration timestamp and save it in local storage
         const expirationTimestamp = Date.now() + expiresInMilliseconds;
         localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
@@ -186,11 +190,12 @@ async function refreshAccessToken(accessToken) {
             localStorage.setItem('refresh_token', data.refresh_token);
             localStorage.setItem('expires_in', data.expires_in);
             // Calculate the expiration time in milliseconds from the 'expires_in' value
-            const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+            //const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
+            const expiresInMilliseconds = 1 * 1000;
             // Calculate the expiration timestamp and save it in local storage
             const expirationTimestamp = Date.now() + expiresInMilliseconds;
             localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
-            return data.accessToken;
+            return data.access_token;
         })
     }catch(error){
         console.error('Error refreshing access token:', error);
