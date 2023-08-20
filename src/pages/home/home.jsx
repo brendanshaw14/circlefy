@@ -1,5 +1,5 @@
 import "./home.scss"
-import Circle from "../../components/circle"
+//import Circle from "../../components/circle"
 import PopCircle from "../../components/popcircle"
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -42,10 +42,10 @@ const Home = () => {
                 const topArtists = data.items; 
                 const profilePhotoUrls = topArtists.map(artist => artist.images[0]?.url); //save top artist images in array
                 //render the circles with the artist names
-                createRoot(document.querySelector('.circle-container')).render(
+                createRoot(document.querySelector('.intro-container')).render(
                     <div>
                     <PopCircle x = '35' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-                    <Circle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]}/>
+                    <PopCircle x = '55' y = '80' size = "12" image={profilePhotoUrls[3]} delay='2'/>
                     </div>, 
                 );
             })
@@ -67,8 +67,8 @@ const Home = () => {
                 <h1 className="title">Circlefy</h1>
             </header>
             <main className="body-container"> 
-                <div className="body-title-text"></div>
-                <div className="circle-container"></div>
+                <div className="intro-container">
+                </div>
             </main>
             <footer className="footer-container">
                 <div className="name">

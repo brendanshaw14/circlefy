@@ -68,27 +68,15 @@
     justify-content:center;
     align-items:center;
     flex-direction: column;
-    .body-title-text {
-        background: linear-gradient(to right, #FF5733, #FFC300);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-size: 24px; /* Adjust font size as needed */
-        /* Add any other styling you want for your gradient text */
-    }
-    /* Styles for the .circle-container */
-    .circle-container {
+
+    /* container for the introduction section */
+    .intro-container{
         position: relative;
         width: 100%;
         height: 60vh;
         margin-bottom: 5vh;
-    }
-  
-    /* Apply styles when hovering over the .login-button */
-    .login-button:hover {
-        transform: scale(1.1); /* Enlarge the button by 10% on hover */
-        border: 2px solid white; /* Add a white border on hover */
-    }
+    }  
+    
 } 
 
 .footer-container {

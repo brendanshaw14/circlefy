@@ -1,6 +1,19 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 
 const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1, delay = 0}) => {
+    const [isVisible, setIsVisible] = useState(false);
+
+    // Apply visibility with delay
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setIsVisible(true);
+        }, delay * 1000);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [delay]);
+
     const isImage = !!image;
 
     // Convert percentage values to actual pixel values
@@ -11,10 +24,11 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
-        animation: `fade-in 2s ease-in ${delay}s`, 
+        animation: `fade-in 2s ease-in`, 
     }
 
     return (
+        isVisible &&( 
         <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
             <defs>
                 <clipPath id={`circle-clip-${actualX}-${actualY}`}>
@@ -50,6 +64,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                 </foreignObject>
             )}
         </svg>
+        )
     );
 };
 
