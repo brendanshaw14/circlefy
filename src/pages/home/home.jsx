@@ -146,8 +146,7 @@ async function getAccessToken() {
         localStorage.setItem('refresh_token', data.refresh_token);
         localStorage.setItem('expires_in', data.expires_in);
         // Calculate the expiration time in milliseconds from the 'expires_in' value
-        //const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
-        const expiresInMilliseconds = 1 * 1000;
+        const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
         // Calculate the expiration timestamp and save it in local storage
         const expirationTimestamp = Date.now() + expiresInMilliseconds;
         localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
@@ -190,8 +189,7 @@ async function refreshAccessToken(accessToken) {
             localStorage.setItem('refresh_token', data.refresh_token);
             localStorage.setItem('expires_in', data.expires_in);
             // Calculate the expiration time in milliseconds from the 'expires_in' value
-            //const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
-            const expiresInMilliseconds = 1 * 1000;
+            const expiresInMilliseconds = localStorage.getItem('expires_in') * 1000;
             // Calculate the expiration timestamp and save it in local storage
             const expirationTimestamp = Date.now() + expiresInMilliseconds;
             localStorage.setItem('expires_at', new Date(expirationTimestamp).toISOString());
