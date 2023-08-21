@@ -20,7 +20,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
 
     const actualX = (x / 100) * visualViewport.width;
-    const actualY = (y / 100) * visualViewport.height*0.6;
+    const actualY = (y / 100) * visualViewport.height*0.8;
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
@@ -67,11 +67,13 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
             </svg>
             <div
                 style={{
+                    ...animationStyle,
                     position: 'absolute', // Set position to absolute
                     width: `${actualSize}px`, 
-                    top: `${actualSize*2.2}px`, // Adjust this value to control the vertical position
+                    top: `${actualY+actualSize/2}px`, // Adjust this value to control the vertical position
                     left: `${actualX-actualSize/2}px`, 
                     fontSize: `${actualSize * 0.10}px`,
+                    marginTop: '20px',
                     color: 'white',
                     textAlign: 'center',
                 }}
