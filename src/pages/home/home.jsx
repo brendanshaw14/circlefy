@@ -45,7 +45,7 @@ const Home = () => {
             .then(data => {
                 tracksData = data;
                 console.log(tracksData);
-                //renderTracksContainer(tracksData);
+                renderTracksContainer(tracksData);
             })
             .catch(error => {
                 console.error('Error fetching track data:', error);
@@ -54,8 +54,6 @@ const Home = () => {
         else{
                 console.log('Error retrieving access token for profile data fetch');
         } 
-            
-        
     }) 
     .catch((error) => {
         console.error("Error during initialization:", error);
@@ -267,11 +265,15 @@ function renderIntroContainer(artistData, username){
 
 //renders the components of the tracks container
 function renderTracksContainer(trackData){
-    const songPhotoUrls = trackData.items.map(track => track.images[1]?.url); //save top artist images in array
+    const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
     createRoot(document.querySelector('.tracks-container')).render(
         <div>
-            <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-            <PopCircle x = '10' y = '10' size = "18" image={songPhotoUrls[7]} delay='0.5'/>
+            <PopCircle x = '50' y = '27' size = '40' color="#ffe80b" text={`This month, your top tracks were:`}/> 
+            <PopCircle x = '50' y = '27' size = '40' color="#11111" image={songPhotoUrls[0]} label={trackData.items[0].name} delay='3.5'/> 
+            <PopCircle x = '20' y = '95' size = '20' color="#11111" image={songPhotoUrls[1]} label={trackData.items[1].name} delay='1'/> 
+            <PopCircle x = '40' y = '95' size = '20' color="#11111" image={songPhotoUrls[2]} label={trackData.items[2].name} delay='1.5'/> 
+            <PopCircle x = '60' y = '95' size = '20' color="#11111" image={songPhotoUrls[3]} label={trackData.items[3].name} delay='2'/> 
+            <PopCircle x = '80' y = '95' size = '20' color="#11111" image={songPhotoUrls[4]} label={trackData.items[4].name} delay='2.5'/> 
         </div>
     );
 }
