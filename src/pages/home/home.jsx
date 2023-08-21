@@ -13,6 +13,8 @@ let username;
 let profileData;
 // eslint-disable-next-line
 let artistData;
+// eslint-disable-next-line
+let tracksData;
 
 
 const Home = () => {
@@ -38,6 +40,15 @@ const Home = () => {
             })
             .catch(error => {
                 console.error('Error fetching artist data:', error);
+            });
+            getTracks(accessToken)
+            .then(data => {
+                tracksData = data;
+                console.log(tracksData);
+                //renderTracksContainer(tracksData);
+            })
+            .catch(error => {
+                console.error('Error fetching track data:', error);
             });
         }
         else{
@@ -240,24 +251,29 @@ function renderIntroContainer(artistData, username){
     const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
     createRoot(document.querySelector('.intro-container')).render(
         <div>
-        <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-        <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
-        <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
-        <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
-        <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
-        <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
-        <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
-        <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
-        <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
-        <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
+            <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
+            <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
+            <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
+            <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
+            <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
+            <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
+            <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
+            <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
+            <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+            <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
         </div>, 
     );
 }
 
 //renders the components of the tracks container
 function renderTracksContainer(trackData){
-    const songPhotoUrls = trackData.items.map(artist => artist.images[1]?.url); //save top artist images in array
-    createRoot(document.querySelector('.artists-container'));
+    const songPhotoUrls = trackData.items.map(track => track.images[1]?.url); //save top artist images in array
+    createRoot(document.querySelector('.tracks-container')).render(
+        <div>
+            <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
+            <PopCircle x = '10' y = '10' size = "18" image={songPhotoUrls[7]} delay='0.5'/>
+        </div>
+    );
 }
 
 //renders the components of the artists container

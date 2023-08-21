@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0}) => {
+const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label}) => {
     const [isVisible, setIsVisible] = useState(false);
 
     // Apply visibility with delay
@@ -29,41 +29,56 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
 
     return (
         isVisible &&( 
-        <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
-            <defs>
-                <clipPath id={`circle-clip-${actualX}-${actualY}`}>
-                    <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
-                </clipPath>
-            </defs>
-            <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} />
-            {isImage ? (
-                <image
-                    x={(actualSize - actualSize * scale) / 2}
-                    y={(actualSize - actualSize * scale) / 2}
-                    width={actualSize * scale}
-                    height={actualSize * scale}
-                    href={image}
-                    clipPath={`url(#circle-clip-${actualX}-${actualY})`}
-                />
-            ) : (
-                <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
-                    <div
-                        xmlns="http://www.w3.org/1999/xhtml"
-                        style={{
-                            overflowWrap: 'break-word',
-                            color: 'white',
-                            textAlign: 'center',
-                            fontSize: `${actualSize * 0.10}px`,
-                            padding: `${actualSize * 0.10}px`,
-                        }}
-                    >
-                        <p>
-                            {text}
-                        </p>
-                    </div>
-                </foreignObject>
-            )}
-        </svg>
+        <div style={{ textAlign: 'center' }}>
+            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
+                <defs>
+                    <clipPath id={`circle-clip-${actualX}-${actualY}`}>
+                        <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
+                    </clipPath>
+                </defs>
+                <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} />
+                {isImage ? (
+                    <image
+                        x={(actualSize - actualSize * scale) / 2}
+                        y={(actualSize - actualSize * scale) / 2}
+                        width={actualSize * scale}
+                        height={actualSize * scale}
+                        href={image}
+                        clipPath={`url(#circle-clip-${actualX}-${actualY})`}
+                    />
+                ) : (
+                    <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
+                        <div
+                            xmlns="http://www.w3.org/1999/xhtml"
+                            style={{
+                                overflowWrap: 'break-word',
+                                color: 'white',
+                                textAlign: 'center',
+                                fontSize: `${actualSize * 0.10}px`,
+                                padding: `${actualSize * 0.10}px`,
+                            }}
+                        >
+                            <p>
+                                {text}
+                            </p>
+                        </div>
+                    </foreignObject>
+                )}
+            </svg>
+            <div
+                style={{
+                    position: 'absolute', // Set position to absolute
+                    width: `${actualSize}px`, 
+                    top: `${actualSize*2.2}px`, // Adjust this value to control the vertical position
+                    left: `${actualX-actualSize/2}px`, 
+                    fontSize: `${actualSize * 0.10}px`,
+                    color: 'white',
+                    textAlign: 'center',
+                }}
+            >
+                {label}
+            </div>
+        </div> 
         )
     );
 };
