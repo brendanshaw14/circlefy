@@ -15,60 +15,26 @@ let profileData;
 let artistData;
 
 
-
 const Home = () => {
 
-    let profilePhotoUrls;
     let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
     init()
     .then((accessToken) => {
-        //scroll handling function: determine which container is rendered by dividing scroll distance by container height
-        window.addEventListener('scroll', () => {
-            const scrolly = window.scrollY;
-            const windowHeight = window.innerHeight;
-            const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.8));
-            if (index > maxIndex){
-                console.log("render "+ index); 
-                maxIndex = index;
-            }
-        });
+        
         if (accessToken) {
             getProfile(accessToken)
             .then(data => {
                 profileData = data;
                 username = data.display_name;
-                console.log(data);
             })
             .catch(error => {
                 console.error('Error fetching profile data:', error);
             });
-        }
-        else{
-                console.log('Error retrieving access token for profile data fetch');
-        } 
-        if (accessToken) {
             getArtists(accessToken)
             .then(data => {
                 artistData = data;
-                console.log(data);
-                //save the artist data
-                profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
-                //render the circles with the artist names
-                createRoot(document.querySelector('.intro-container')).render(
-                    <div>
-                    <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-                    <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
-                    <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
-                    <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
-                    <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
-                    <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
-                    <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
-                    <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
-                    <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
-                    <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
-                    </div>, 
-                );
+                renderIntroContainer(artistData, username);
             })
             .catch(error => {
                 console.error('Error fetching artist data:', error);
@@ -77,11 +43,23 @@ const Home = () => {
         else{
                 console.log('Error retrieving access token for profile data fetch');
         } 
+            
+        
     }) 
     .catch((error) => {
         console.error("Error during initialization:", error);
     });
 
+    //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+    window.addEventListener('scroll', () => {
+        const scrolly = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.8));
+        if (index > maxIndex){
+            console.log("render "+ index); 
+            maxIndex = index;
+        }
+    });
 
     return (
         <div className="home">
@@ -121,15 +99,15 @@ export default Home
 async function init(){
         let accessToken = localStorage.getItem('access_token');
         if (!accessToken){
-            console.log("no access token, getting token");
+            //console.log("no access token, getting token");
             accessToken = await getAccessToken();
         }
         else if (!verifyAccessToken(accessToken)){
-            console.log("token expired: refreshing token")
+            //console.log("token expired: refreshing token")
             accessToken = await refreshAccessToken();
         }
         else{
-            console.log("token exists and was validated")
+            //console.log("token exists and was validated")
         }
         return accessToken
 }
@@ -140,7 +118,6 @@ async function getAccessToken() {
         const urlParams = new URLSearchParams(window.location.search);
         let code = urlParams.get('code');
         let codeVerifier = localStorage.getItem('code_verifier');
-
         let body = new URLSearchParams({
             grant_type: 'authorization_code',
             code: code,
@@ -148,7 +125,6 @@ async function getAccessToken() {
             client_id: clientId,
             code_verifier: codeVerifier
         });
-
         const response = await fetch('https://accounts.spotify.com/api/token', {
             method: 'POST',
             headers: {
@@ -156,11 +132,9 @@ async function getAccessToken() {
             },
             body: body
         });
-
         if (!response.ok) {
             throw new Error('HTTP status ' + response.status);
         }
-
         const data = await response.json();
         localStorage.setItem('access_token', data.access_token);
         localStorage.setItem('refresh_token', data.refresh_token);
@@ -180,17 +154,14 @@ async function getAccessToken() {
 async function refreshAccessToken(accessToken) {
     try{
         const refreshToken = localStorage.getItem('refresh_token');
-  
         if (!refreshToken) {
         throw new Error('No refresh token found in local storage.');
         }
-  
         const body = new URLSearchParams({
         grant_type: 'refresh_token',
         refresh_token: refreshToken,
         client_id: clientId,
         });
-  
         return fetch('https://accounts.spotify.com/api/token', {
         method: 'POST',
         headers: {
@@ -218,7 +189,7 @@ async function refreshAccessToken(accessToken) {
     }catch(error){
         console.error('Error refreshing access token:', error);
     }
-  }
+}
 
 //uses the locally stored 'expires_at' value to determine whether or not the access token is still valid
 function verifyAccessToken() {        
@@ -253,7 +224,45 @@ async function getArtists(accessToken) {
     return data; // Return the user's data from the Spotify API
 }
 
-    
+//artist data retreive definition
+async function getTracks(accessToken) {
+    const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+    headers: {
+        Authorization: 'Bearer ' + accessToken
+    }
+    });
+    const data = await response.json();
+    return data; // Return the user's data from the Spotify API
+}
 
 
- 
+function renderIntroContainer(artistData, username){
+    const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+    createRoot(document.querySelector('.intro-container')).render(
+        <div>
+        <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
+        <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
+        <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
+        <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
+        <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
+        <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
+        <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
+        <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
+        <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+        <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
+        </div>, 
+    );
+}
+
+//renders the components of the tracks container
+function renderTracksContainer(trackData){
+    const songPhotoUrls = trackData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+    createRoot(document.querySelector('.artists-container'));
+}
+
+//renders the components of the artists container
+function renderArtistsContainer(artistData){
+    const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+    createRoot(document.querySelector('.artists-container'));
+}
+
