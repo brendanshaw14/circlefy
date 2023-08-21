@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react';
 
-const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1, delay = 0}) => {
+const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0}) => {
     const [isVisible, setIsVisible] = useState(false);
 
     // Apply visibility with delay

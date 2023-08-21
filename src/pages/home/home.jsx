@@ -9,16 +9,34 @@ const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
 
 let username; 
+// eslint-disable-next-line
+let profileData;
+// eslint-disable-next-line
+let artistData;
+
+
 
 const Home = () => {
-    
+
+    let profilePhotoUrls;
+    let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
     init()
     .then((accessToken) => {
-
+        //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+        window.addEventListener('scroll', () => {
+            const scrolly = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.8));
+            if (index > maxIndex){
+                console.log("render "+ index); 
+                maxIndex = index;
+            }
+        });
         if (accessToken) {
             getProfile(accessToken)
             .then(data => {
+                profileData = data;
                 username = data.display_name;
                 console.log(data);
             })
@@ -32,23 +50,23 @@ const Home = () => {
         if (accessToken) {
             getArtists(accessToken)
             .then(data => {
+                artistData = data;
                 console.log(data);
                 //save the artist data
-                const topArtists = data.items; 
-                const profilePhotoUrls = topArtists.map(artist => artist.images[1]?.url); //save top artist images in array
+                profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
                 //render the circles with the artist names
                 createRoot(document.querySelector('.intro-container')).render(
                     <div>
                     <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`}/> 
-                    <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.2'/>
-                    <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.2'/>
-                    <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.2'/>
-                    <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[3]} delay='0.4'/>
-                    <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.6'/>
-                    <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[10]} delay='0.6'/>
-                    <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='0.6'/>
-                    <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='0.8'/>
-                    <PopCircle x = '75' y = '55' size = "27" image={profilePhotoUrls[0]} delay='0.8'/>
+                    <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
+                    <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
+                    <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
+                    <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
+                    <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
+                    <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
+                    <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
+                    <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+                    <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
                     </div>, 
                 );
             })
@@ -64,14 +82,16 @@ const Home = () => {
         console.error("Error during initialization:", error);
     });
 
+
     return (
         <div className="home">
             <header className="header-container"> 
                 <h1 className="title">Circlefy</h1>
             </header>
             <main className="body-container"> 
-                <div className="intro-container">
-                </div>
+                <div className="intro-container"></div>
+                <div className="tracks-container"></div>
+                <div className="artists-container"></div>
             </main>
             <footer className="footer-container">
                 <div className="name">
@@ -233,4 +253,7 @@ async function getArtists(accessToken) {
     return data; // Return the user's data from the Spotify API
 }
 
+    
 
+
+ 
