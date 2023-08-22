@@ -25,7 +25,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
-        animation: 'pop-in 0.2s ease-in, circlePulse 4s infinite ease-in-out', 
+        animation: 'pop-in 0.2s ease-in, circlePulse 4s infinite ease-in-out 0.2s', 
     }
 
     return (
