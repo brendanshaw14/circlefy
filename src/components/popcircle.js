@@ -29,7 +29,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
 
     return (
         isVisible &&( 
-        <div style={{ textAlign: 'center' }}>
+        <div style={{ textAlign: 'center', width: '0px', height: '0px' }}>
             <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>

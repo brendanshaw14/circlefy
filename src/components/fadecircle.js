@@ -24,7 +24,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
-        animation: `fade-in 3s ease-in`, 
+        animation: `fade-in 2s ease-in`,
     }
 
     return (

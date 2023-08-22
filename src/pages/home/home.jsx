@@ -253,54 +253,78 @@ async function getTracks(accessToken) {
 
 
 function renderIntroContainer(artistData, username){
-    const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
-    createRoot(document.querySelector('.intro-container')).render(
-        <div>
-            <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
-            <FadeCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
-            <FadeCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
-            <FadeCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
-            <FadeCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
-            <FadeCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
-            <FadeCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
-            <FadeCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
-            <FadeCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
-            <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Scroll down for a look at your listening this month"} delay='1.7'/>
-        </div>, 
-    );
+    try{
+        const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+        createRoot(document.querySelector('.intro-container')).render(
+            <div>
+                <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
+                <FadeCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
+                <FadeCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
+                <FadeCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
+                <FadeCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
+                <FadeCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
+                <FadeCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
+                <FadeCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
+                <FadeCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Scroll down for a look at your listening this month"} delay='1.7'/>
+            </div>, 
+        );
+    }
+    catch (error){
+        console.log(error);
+    }
 }
 
 //renders the components of the tracks container
 function renderTracksContainer(trackData){
-    const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
-    createRoot(document.querySelector('.tracks-container')).render(
-        <div>
-            <FadeCircle x = '50' y = '15' size = '30' color="#ffe80b" text={`This month, your top tracks were:`}/> 
-            <PopCircle x = '50' y = '15' size = '30' image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='7'/> 
-            <PopCircle x = '15' y = '75' size = '20' image={songPhotoUrls[1]} label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay='6'/> 
-            <PopCircle x = '38.3' y = '75' size = '20' image={songPhotoUrls[2]} label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay='5'/> 
-            <PopCircle x = '61.6' y = '75' size = '20' image={songPhotoUrls[3]} label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay='4'/> 
-            <PopCircle x = '85' y = '75' size = '20' image={songPhotoUrls[4]} label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay='3'/> 
-        </div>
-    );
+    try{
+        const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
+        createRoot(document.querySelector('.tracks-container')).render(
+            <div>
+                <FadeCircle x = '50' y = '15' size = '30' color="#ffe80b" text={`This month, your top tracks were:`}/> 
+                <PopCircle x = '50' y = '15' size = '30' image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='7'/> 
+                <PopCircle x = '15' y = '75' size = '20' image={songPhotoUrls[1]} label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay='6'/> 
+                <PopCircle x = '38.3' y = '75' size = '20' image={songPhotoUrls[2]} label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay='5'/> 
+                <PopCircle x = '61.6' y = '75' size = '20' image={songPhotoUrls[3]} label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay='4'/> 
+                <PopCircle x = '85' y = '75' size = '20' image={songPhotoUrls[4]} label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay='3'/> 
+            </div>
+        );
+    }
+    catch (error){
+        console.log(error);
+    }
 }
 
 //renders the components of the tracks container
 function renderTracksContainer2(trackData){
+    try{
     const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
+    const songNames = trackData.items.map(track => track.name); //save top artist images in array
+    const artistNames = trackData.items.map(track => track.artists[0]?.name || "Unknown Artist"); //save top artist images in array
     createRoot(document.querySelector('.tracks-container-2')).render(
         <div>
-            <FadeCircle x = '50' y = '15' size = '30' color="#ff9f3d" text={`And some honorable mentions:`}/> 
-            <PopCircle x = '10' y = '10' size = "18" image={songPhotoUrls[7]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.5'/>
-            <PopCircle x = '30' y = '95' size = "6" image={songPhotoUrls[2]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.6'/>
-            <PopCircle x = '18' y = '35' size = "8" image={songPhotoUrls[5]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.7'/>
-            <PopCircle x = '15' y = '80' size = "25" image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.8'/>
-            <PopCircle x = '60' y = '85' size = "12" image={songPhotoUrls[14]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.9'/>
-            <PopCircle x = '90' y = '92' size = "15" image={songPhotoUrls[4]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.0'/>
-            <PopCircle x = '64' y = '15' size = "8" image={songPhotoUrls[8]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.1'/>
-            <PopCircle x = '90' y = '15' size = "15" image={songPhotoUrls[1]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.2'/>
+            <FadeCircle x = '50' y = '35' size = '30' color="#ff9f3d" text={`And some honorable mentions:`}/> 
+            <PopCircle x = '10' y = '20' size = "15" image={songPhotoUrls[5]} label={`6. ${songNames[5]}- ${artistNames[5]}`} delay='0.5'/>
+            <PopCircle x = '12' y = '85' size = "14" image={songPhotoUrls[6]} label={`7. ${songNames[6]}- ${artistNames[6]}`} delay='0.6'/>
+            <PopCircle x = '25' y = '50' size = "12" image={songPhotoUrls[7]} label={`8. ${songNames[7]}- ${artistNames[7]}`} delay='0.7'/>
+            <PopCircle x = '25' y = '80' size = "8" image={songPhotoUrls[8]} label={`9. ${songNames[8]}- ${artistNames[8]}`} delay='0.8'/>
+            <PopCircle x = '28' y = '85' size = "11" image={songPhotoUrls[9]} label={`10. ${songNames[9]}- ${artistNames[9]}`} delay='0.9'/>
+            <PopCircle x = '33' y = '92' size = "9" image={songPhotoUrls[10]} label={`11. ${songNames[10]}- ${artistNames[10]}`} delay='1.0'/>
+            <PopCircle x = '40' y = '15' size = "10" image={songPhotoUrls[11]} label={`12. ${songNames[11]}- ${artistNames[11]}`} delay='1.1'/>
+            <PopCircle x = '48' y = '15' size = "7" image={songPhotoUrls[12]} label={`13. ${songNames[12]}- ${artistNames[12]}`} delay='1.2'/>
+            <PopCircle x = '55' y = '35' size = "8" image={songPhotoUrls[13]} label={`14. ${songNames[13]}- ${artistNames[13]}`} delay='0.7'/>
+            <PopCircle x = '61' y = '80' size = "13" image={songPhotoUrls[14]} label={`15. ${songNames[14]}- ${artistNames[14]}`} delay='0.8'/>
+            <PopCircle x = '68' y = '85' size = "9" image={songPhotoUrls[15]} label={`16. ${songNames[15]}- ${artistNames[15]}`} delay='0.9'/>
+            <PopCircle x = '74' y = '92' size = "12" image={songPhotoUrls[16]} label={`17. ${songNames[16]}- ${artistNames[16]}`} delay='1.0'/>
+            <PopCircle x = '80' y = '15' size = "10" image={songPhotoUrls[17]} label={`18. ${songNames[17]}- ${artistNames[17]}`} delay='1.1'/>
+            <PopCircle x = '85' y = '15' size = "7" image={songPhotoUrls[18]} label={`19. ${songNames[18]}- ${artistNames[18]}`} delay='1.2'/>
+            <PopCircle x = '91' y = '15' size = "7" image={songPhotoUrls[19]} label={`20. ${songNames[19]}- ${artistNames[19]}`} delay='1.2'/>
         </div>
     );
+    }
+    catch(error){
+        console.log(error);
+    }
 }
 
 //renders the components of the artists container
