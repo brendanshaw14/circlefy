@@ -29,7 +29,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
 
     return (
         isVisible &&( 
-        <div style={{ textAlign: 'center', width: '0px', height: '0px' }}>
+        <div style={{ textAlign: 'center', justifyContent: 'center', width: '0px', height: '0px' }}>
             <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>
@@ -48,13 +48,11 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                     />
                 ) : (
                     <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
-                        <div
+                        <div className='circle-text-container'
                             xmlns="http://www.w3.org/1999/xhtml"
                             style={{
                                 overflowWrap: 'break-word',
                                 color: 'white',
-                                textAlign: 'center',
-                                justifyContent: 'center',
                                 fontSize: `${actualSize * 0.10}px`,
                                 padding: `${actualSize * 0.10}px`,
                             }}
@@ -77,6 +75,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                     marginTop: '20px',
                     color: 'white',
                     textAlign: 'center',
+                    justifyContent: 'center'
                 }}
             >
                 {label}

@@ -47,15 +47,21 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
                         clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                     />
                 ) : (
-                    <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
+                    <foreignObject x={0} y={0} width={actualSize} height={actualSize} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
                         <div
                             xmlns="http://www.w3.org/1999/xhtml"
                             style={{
+                                position: 'absolute', 
+                                width: '80%', 
+                                height: '80%', 
                                 overflowWrap: 'break-word',
+                                display: 'flex', 
+                                alignItems: 'center', // Vertically center content
+                                justifyContent: 'center',
                                 color: 'white',
                                 textAlign: 'center',
                                 fontSize: `${actualSize * 0.10}px`,
-                                padding: `${actualSize * 0.10}px`,
+                                padding: '10%'
                             }}
                         >
                             <p>
