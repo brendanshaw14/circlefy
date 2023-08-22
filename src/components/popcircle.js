@@ -54,6 +54,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                                 overflowWrap: 'break-word',
                                 color: 'white',
                                 textAlign: 'center',
+                                justifyContent: 'center',
                                 fontSize: `${actualSize * 0.10}px`,
                                 padding: `${actualSize * 0.10}px`,
                             }}
