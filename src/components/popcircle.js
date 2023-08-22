@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import '../pages/home/home.scss'
 
 const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label}) => {
     const [isVisible, setIsVisible] = useState(false);
@@ -24,7 +25,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
-        animation: `pop-in 0.2s ease-in`, 
+        animation: 'pop-in 0.2s ease-in, circlePulse 4s infinite ease-in-out', 
     }
 
     return (

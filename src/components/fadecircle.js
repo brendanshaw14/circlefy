@@ -24,7 +24,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
     const actualSize = stretch*(size / 100)*visualViewport.height;
 
     const animationStyle = {
-        animation: `fade-in 2s ease-in`,
+        animation: 'fade-in 2s ease-in, circlePulse 4s infinite ease-in-out',
     }
 
     return (
@@ -36,7 +36,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
                         <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
                     </clipPath>
                 </defs>
-                <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} />
+                <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} style={{transition: 'r 0.2s ease-in-out'}}/>
                 {isImage ? (
                     <image
                         x={(actualSize - actualSize * scale) / 2}
