@@ -1,5 +1,6 @@
 import "./home.scss"
 //import Circle from "../../components/circle"
+import FadeCircle from "../../components/fadecircle"
 import PopCircle from "../../components/popcircle"
 import React from 'react';
 import { createRoot } from 'react-dom/client';
@@ -16,6 +17,11 @@ let artistData;
 // eslint-disable-next-line
 let tracksData;
 
+const renderFunctions = [
+    () => renderTracksContainer(tracksData), 
+    () => renderTracksContainer2(tracksData), 
+    () => renderArtistsContainer(artistData, username)
+];
 
 const Home = () => {
 
@@ -45,7 +51,6 @@ const Home = () => {
             .then(data => {
                 tracksData = data;
                 console.log(tracksData);
-                renderTracksContainer(tracksData);
             })
             .catch(error => {
                 console.error('Error fetching track data:', error);
@@ -63,8 +68,9 @@ const Home = () => {
     window.addEventListener('scroll', () => {
         const scrolly = window.scrollY;
         const windowHeight = window.innerHeight;
-        const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.8));
+        const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight));
         if (index > maxIndex){
+            renderFunctions[index-1]();
             console.log("render "+ index); 
             maxIndex = index;
         }
@@ -78,7 +84,8 @@ const Home = () => {
             <main className="body-container"> 
                 <div className="intro-container"></div>
                 <div className="tracks-container"></div>
-                <div className="artists-container"></div>
+                <div className="tracks-container-2"></div>
+                <div className="artist-container"></div>
             </main>
             <footer className="footer-container">
                 <div className="name">
@@ -224,7 +231,7 @@ async function getProfile(accessToken) {
 
 //artist data retreive definition
 async function getArtists(accessToken) {
-    const response = await fetch('https://api.spotify.com/v1/me/top/artists', {
+    const response = await fetch('https://api.spotify.com/v1/me/top/artists?time_range=short_term', {
     headers: {
         Authorization: 'Bearer ' + accessToken
     }
@@ -235,7 +242,7 @@ async function getArtists(accessToken) {
 
 //artist data retreive definition
 async function getTracks(accessToken) {
-    const response = await fetch('https://api.spotify.com/v1/me/top/tracks', {
+    const response = await fetch('https://api.spotify.com/v1/me/top/tracks?time_range=short_term', {
     headers: {
         Authorization: 'Bearer ' + accessToken
     }
@@ -249,16 +256,16 @@ function renderIntroContainer(artistData, username){
     const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
     createRoot(document.querySelector('.intro-container')).render(
         <div>
-            <PopCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
-            <PopCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
-            <PopCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
-            <PopCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
-            <PopCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
-            <PopCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
-            <PopCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
-            <PopCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
-            <PopCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
-            <PopCircle x = '75' y = '55' size = "27" color="#399fec" text={"Let's take a look at your listening this month"} delay='1.7'/>
+            <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
+            <FadeCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
+            <FadeCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
+            <FadeCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
+            <FadeCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
+            <FadeCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
+            <FadeCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
+            <FadeCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
+            <FadeCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+            <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Scroll down for a look at your listening this month"} delay='1.7'/>
         </div>, 
     );
 }
@@ -268,12 +275,30 @@ function renderTracksContainer(trackData){
     const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
     createRoot(document.querySelector('.tracks-container')).render(
         <div>
-            <PopCircle x = '50' y = '15' size = '40' color="#ffe80b" text={`This month, your top tracks were:`}/> 
-            <PopCircle x = '50' y = '15' size = '40' color="#11111" image={songPhotoUrls[0]} label={trackData.items[0].name} delay='3.5'/> 
-            <PopCircle x = '15' y = '75' size = '20' color="#11111" image={songPhotoUrls[1]} label={trackData.items[1].name} delay='1'/> 
-            <PopCircle x = '38.3' y = '75' size = '20' color="#11111" image={songPhotoUrls[2]} label={trackData.items[2].name} delay='1.5'/> 
-            <PopCircle x = '61.6' y = '75' size = '20' color="#11111" image={songPhotoUrls[3]} label={trackData.items[3].name} delay='2'/> 
-            <PopCircle x = '85' y = '75' size = '20' color="#11111" image={songPhotoUrls[4]} label={trackData.items[4].name} delay='2.5'/> 
+            <FadeCircle x = '50' y = '15' size = '30' color="#ffe80b" text={`This month, your top tracks were:`}/> 
+            <PopCircle x = '50' y = '15' size = '30' image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='7'/> 
+            <PopCircle x = '15' y = '75' size = '20' image={songPhotoUrls[1]} label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay='6'/> 
+            <PopCircle x = '38.3' y = '75' size = '20' image={songPhotoUrls[2]} label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay='5'/> 
+            <PopCircle x = '61.6' y = '75' size = '20' image={songPhotoUrls[3]} label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay='4'/> 
+            <PopCircle x = '85' y = '75' size = '20' image={songPhotoUrls[4]} label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay='3'/> 
+        </div>
+    );
+}
+
+//renders the components of the tracks container
+function renderTracksContainer2(trackData){
+    const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url); //save top artist images in array
+    createRoot(document.querySelector('.tracks-container-2')).render(
+        <div>
+            <FadeCircle x = '50' y = '15' size = '30' color="#ff9f3d" text={`And some honorable mentions:`}/> 
+            <PopCircle x = '10' y = '10' size = "18" image={songPhotoUrls[7]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.5'/>
+            <PopCircle x = '30' y = '95' size = "6" image={songPhotoUrls[2]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.6'/>
+            <PopCircle x = '18' y = '35' size = "8" image={songPhotoUrls[5]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.7'/>
+            <PopCircle x = '15' y = '80' size = "25" image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.8'/>
+            <PopCircle x = '60' y = '85' size = "12" image={songPhotoUrls[14]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='0.9'/>
+            <PopCircle x = '90' y = '92' size = "15" image={songPhotoUrls[4]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.0'/>
+            <PopCircle x = '64' y = '15' size = "8" image={songPhotoUrls[8]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.1'/>
+            <PopCircle x = '90' y = '15' size = "15" image={songPhotoUrls[1]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay='1.2'/>
         </div>
     );
 }
@@ -281,6 +306,24 @@ function renderTracksContainer(trackData){
 //renders the components of the artists container
 function renderArtistsContainer(artistData){
     const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
-    createRoot(document.querySelector('.artists-container'));
+    createRoot(document.querySelector('.artist-container')).render(
+        <div>
+            <FadeCircle x = '50' y = '15' size = '30' color="#ff59b5" text={`And artists- Here were your top 5:`}/> 
+            <PopCircle x = '50' y = '15' size = '30' image={profilePhotoUrls[0]} label={`1. ${artistData.items[0].name}`} delay='5.5'/> 
+            <PopCircle x = '15' y = '75' size = '20' image={profilePhotoUrls[1]} label={`2. ${artistData.items[1].name}`} delay='4.5'/> 
+            <PopCircle x = '38.3' y = '75' size = '20' image={profilePhotoUrls[2]} label={`3. ${artistData.items[2].name}`} delay='3.5'/> 
+            <PopCircle x = '61.6' y = '75' size = '20' image={profilePhotoUrls[3]} label={`4. ${artistData.items[3].name}`} delay='2.5'/> 
+            <PopCircle x = '85' y = '75' size = '20' image={profilePhotoUrls[4]} label={`5. ${artistData.items[4].name}`} delay='1.5'/> 
+        </div>
+    );
 }
 
+/****Things to add: 
+ * Valence: happiness
+ * BPM??
+ * Tags? 
+ * Genres? 
+ * Danceability?
+ * 
+ * 
+ */
