@@ -1,10 +1,10 @@
-import "./home.scss"
+import "./home.scss";
 //import Circle from "../../components/circle"
-import FadeCircle from "../../components/fadecircle"
-import PopCircle from "../../components/popcircle"
-import React from 'react';
+import FadeCircle from "../../components/circles/fadecircle";
+import PopCircle from "../../components/circles/popcircle";
+import React, {useState, useEffect} from 'react';
 import { createRoot } from 'react-dom/client';
-import { WebPlaybackSDK } from "react-spotify-web-playback-sdk";
+import WebPlayback from "../../components/webplayback";
 
 
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
@@ -27,76 +27,71 @@ const renderFunctions = [
 
 const Home = () => {
 
+    const [accessToken, setAccessToken] = useState(null);
+
+    useEffect(() => {
+      init()
+        .then((accessToken) => {
+          setAccessToken(accessToken);
+        })
+        .catch((error) => {
+          console.error('Error during initialization:', error);
+        });
+    }, []);
     let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
-    init()
-    .then((accessToken) => {
+    if (accessToken) {
+        getProfile(accessToken)
+        .then(data => {
+            profileData = data;
+            username = data.display_name;
+        })
+        .catch(error => {
+            console.error('Error fetching profile data:', error);
+        });
+        getArtists(accessToken)
+        .then(data => {
+            artistData = data;
+            renderIntroContainer(artistData, username);
+        })
+        .catch(error => {
+            console.error('Error fetching artist data:', error);
+        });
+        getTracks(accessToken)
+        .then(data => {
+            tracksData = data;
+            console.log(tracksData);
+        })
+        .catch(error => {
+            console.error('Error fetching track data:', error);
+        });
+         
         
-        if (accessToken) {
-
-            createRoot(document.querySelector('.header-container')).render(
-                <WebPlaybackSDK
-                    deviceName="Circlefy WebApp"
-                    getOAuthToken={accessToken}
-                    volume={0.5}>
-                </WebPlaybackSDK>
-            );
-
-            getProfile(accessToken)
-            .then(data => {
-                profileData = data;
-                username = data.display_name;
-            })
-            .catch(error => {
-                console.error('Error fetching profile data:', error);
-            });
-            getArtists(accessToken)
-            .then(data => {
-                artistData = data;
-                renderIntroContainer(artistData, username);
-            })
-            .catch(error => {
-                console.error('Error fetching artist data:', error);
-            });
-            getTracks(accessToken)
-            .then(data => {
-                tracksData = data;
-                console.log(tracksData);
-            })
-            .catch(error => {
-                console.error('Error fetching track data:', error);
-            });
+        //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+        window.addEventListener('scroll', () => {
+            const scrolly = window.scrollY;
+            const windowHeight = window.innerHeight;
+            const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.9));
+            if (index > maxIndex){
+                renderFunctions[index-1]();
+                console.log("render "+ index); 
+                maxIndex = index;
+            }
+        });
             
-            //scroll handling function: determine which container is rendered by dividing scroll distance by container height
-            window.addEventListener('scroll', () => {
-                const scrolly = window.scrollY;
-                const windowHeight = window.innerHeight;
-                const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.9));
-                if (index > maxIndex){
-                    renderFunctions[index-1]();
-                    console.log("render "+ index); 
-                    maxIndex = index;
-                }
-            });
-            
-        }
-        else{
-                console.log('Error retrieving access token for profile data fetch');
-        } 
-    }) 
-    .catch((error) => {
-        console.error("Error during initialization:", error);
-    });
-
+    }
     
-
+           
     return (
         <div className="home">
-            <head>
-            </head>
             <header className="header-container"> 
                 <h1 className="title">Circlefy</h1>
             </header>
+            <div className="SDK">
+                {accessToken && (
+                    <WebPlayback token={accessToken} />
+                )}
+            </div>
             <main className="body-container"> 
                 <div className="intro-container"></div>
                 <div className="tracks-container"></div>

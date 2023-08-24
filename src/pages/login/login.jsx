@@ -1,10 +1,10 @@
 import "./login.scss"
-import FadeCircle from "../../components/fadecircle"
+import FadeCircle from "../../components/circles/fadecircle"
 
 // Global variables to store Spotify API details
 const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
-const scope = ['user-top-read', 'user-library-read','user-follow-read', 'streaming', 'user-read-email', 'user-read-private', ]; 
+const scope = ['user-top-read', 'user-library-read','user-follow-read', 'streaming', 'user-read-email', 'user-read-private']; 
 
 const Login = () => {
     
