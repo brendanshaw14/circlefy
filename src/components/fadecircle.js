@@ -13,7 +13,6 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
             clearTimeout(timeoutId);
         };
     }, [delay]);
-
     const isImage = !!image;
 
     // Convert percentage values to actual pixel values
@@ -30,7 +29,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
     return (
         isVisible &&( 
         <div style={{ textAlign: 'center' }}>
-            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize}>
+            <svg className="circle-svg" style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2, ":hover": {transform: 'scale(1.1)'}}} width={actualSize} height={actualSize}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                         <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
