@@ -65,7 +65,10 @@ const Home = () => {
         .catch(error => {
             console.error('Error fetching track data:', error);
         });
-         
+        getAvailableDevices(accessToken)
+        .then(data => {
+            console.log(data);
+        })
         
         //scroll handling function: determine which container is rendered by dividing scroll distance by container height
         window.addEventListener('scroll', () => {
@@ -375,6 +378,20 @@ function renderArtistsContainer2(artistData){
         </div>
     );
 }
+
+//gets the available spotify player devices 
+async function getAvailableDevices(accessToken){
+    try{
+        const response = await fetch('api.spotify.com/v1/me/player/devices', {
+            header: {Authorization: 'Bearer ' + accessToken}
+        });
+        return response;
+    }
+    catch (error){
+        console.log(error);
+    }
+}
+
 /****Things to add: 
  * Valence: happiness
  * BPM??

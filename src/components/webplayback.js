@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import PopCircle from './circles/popcircle';
 
 function WebPlayback(props) {
   const [currentTrack, setCurrentTrack] = useState({
@@ -57,15 +58,9 @@ function WebPlayback(props) {
     <>
       <div className="container">
         <div className="main-wrapper">
-          <img
-            //src={currentTrack.album.images[0].url}
-            className="now-playing__cover"
-            alt=""
-          />
-
+            <PopCircle x="50" y="50" size="30" image= {currentTrack.album.images[0].url} label={`${currentTrack.name}- ${currentTrack.artists[0]}`}/>
           <div className="now-playing__side">
             <div className="now-playing__name">{currentTrack.name}</div>
-
             <div className="now-playing__artist">
               {currentTrack.artists[0].name}
             </div>
