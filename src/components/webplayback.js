@@ -59,19 +59,15 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   
   return (
     <>
-      <div className="container">
-        <div className="main-wrapper">
-            <PopCircle x="50" y="50" size="10" image= {currentTrack.album.images[0].url} label={`${currentTrack.name || 'Unknown Track'} - ${currentTrack.artists[0]?.name || 'Unknown Artist'}`}/>
-          <div className="now-playing__side">
-            <div className="now-playing__name">{currentTrack.name || 'Untitled'}</div>
-            <div className="now-playing__artist">
-              {currentTrack.artists[0].name}
-            </div>
+      <PopCircle x='45' y='0' size="5" image= {currentTrack.album.images[0].url}/>
+      <div className="now-playing-info">
+        <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
+        <div className="now-playing-artist">
+          {currentTrack.artists[0].name}
+        </div>
 
-            <div className="now-playing__status">
-              {isActive ? (isPaused ? 'Paused' : 'Playing') : 'Not Active'}
-            </div>
-          </div>
+        <div className="now-playing-status">
+          {isActive ? (isPaused ? 'Paused' : 'Playing') : 'Not Active'}
         </div>
       </div>
     </>

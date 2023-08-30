@@ -92,11 +92,7 @@ const Home = () => {
             <header className="header-container"> 
                 <h1 className="title">Circlefy</h1>
             </header>
-            <div className="SDK">
-                {accessToken && (
-                    <WebPlayback accessToken={accessToken} onDeviceLoad={handleIdLoad}/>
-                )}
-            </div>
+            
             <main className="body-container"> 
                 <div className="intro-container"></div>
                 <div className="tracks-container"></div>
@@ -104,6 +100,11 @@ const Home = () => {
                 <div className="artist-container"></div>
                 <div className="artist-container-2"></div>
             </main>
+            <div className="player-container">
+                {accessToken && (
+                    <WebPlayback accessToken={accessToken} onDeviceLoad={handleIdLoad}/>
+                )}
+            </div>
             <footer className="footer-container">
                 <div className="name">
                     <span>by Brendan Shaw</span>
