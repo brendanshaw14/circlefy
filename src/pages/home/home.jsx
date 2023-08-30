@@ -28,6 +28,7 @@ const renderFunctions = [
 const Home = () => {
 
     const [accessToken, setAccessToken] = useState(null);
+    const [deviceId, setDeviceId] = useState('');
 
     useEffect(() => {
       init()
@@ -60,15 +61,10 @@ const Home = () => {
         getTracks(accessToken)
         .then(data => {
             tracksData = data;
-            console.log(tracksData);
         })
         .catch(error => {
             console.error('Error fetching track data:', error);
         });
-        getAvailableDevices(accessToken)
-        .then(data => {
-            console.log(data);
-        })
         
         //scroll handling function: determine which container is rendered by dividing scroll distance by container height
         window.addEventListener('scroll', () => {
@@ -77,14 +73,20 @@ const Home = () => {
             const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.9));
             if (index > maxIndex){
                 renderFunctions[index-1]();
-                console.log("render "+ index); 
                 maxIndex = index;
             }
         });
-            
     }
+
+        const handleIdLoad = (newDeviceId) => {
+            console.log(newDeviceId); // Logs the newDeviceId immediately
+            setDeviceId(newDeviceId); // Schedules a state update
+        };
     
-           
+        useEffect(() => {
+            console.log(deviceId); // Logs the updated value of deviceId
+        }, [deviceId]);
+
     return (
         <div className="home">
             <header className="header-container"> 
@@ -92,7 +94,7 @@ const Home = () => {
             </header>
             <div className="SDK">
                 {accessToken && (
-                    <WebPlayback token={accessToken} />
+                    <WebPlayback accessToken={accessToken} onDeviceLoad={handleIdLoad}/>
                 )}
             </div>
             <main className="body-container"> 
@@ -377,19 +379,6 @@ function renderArtistsContainer2(artistData){
             <PopCircle x = '91' y = '55' size = "10" image={profilePhotoUrls[19]} label={`20.  ${artistNames[19]}`} delay='3.6'/>
         </div>
     );
-}
-
-//gets the available spotify player devices 
-async function getAvailableDevices(accessToken){
-    try{
-        const response = await fetch('api.spotify.com/v1/me/player/devices', {
-            header: {Authorization: 'Bearer ' + accessToken}
-        });
-        return response;
-    }
-    catch (error){
-        console.log(error);
-    }
 }
 
 /****Things to add: 
