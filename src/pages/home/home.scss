@@ -200,6 +200,26 @@
                 
             }
         }
+        .inactive-player-display{
+            margin: 10px;
+            display: flex;
+            width: 30vh;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            text-align: center;
+            flex-direction: column;
+            justify-content: center;
+
+            .activate-player-button{
+                font-family: 'Circle Black';
+                font-size: 2vh;
+                border: none;
+                background: none;
+                color:rgb(87, 87, 87);
+                width: 100%;
+                height: 100%;
+            }
+        }
     }
       
     .footer-container {

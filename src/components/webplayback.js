@@ -63,20 +63,23 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   const handlePlay = () => {
     playerInstance.togglePlay();
   }
+  const activatePlayer = () => {
+    playerInstance.activateElement();
+  }
 
   return (
     <>
-    {isActive && 
-      <div className='now-playing-display'>
-        <div className='now-playing-circle'>
-          <PlayerCircle x='100' y='5' size="6" image= {currentTrack.album.images[0].url} isPaused={isPaused}/>
-        </div>
-        <div className="now-playing-info">
-          <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
-          <div className="now-playing-artist">
-            {currentTrack.artists[0].name}
+      {isActive ? (
+        <div className='now-playing-display'>
+          <div className='now-playing-circle'>
+            <PlayerCircle x='100' y='5' size="6" image= {currentTrack.album.images[0].url} isPaused={isPaused}/>
           </div>
-        </div>
+          <div className="now-playing-info">
+            <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
+            <div className="now-playing-artist">
+              {currentTrack.artists[0].name}
+            </div>
+          </div>
           <div className='play-pause-container'>
             {isPaused ? (
               <button id="play-button" className="play-button" onClick={handlePlay}>
@@ -89,7 +92,12 @@ function WebPlayback({accessToken, onDeviceLoad}) {
             }
           </div>
         </div>
-    }
+      ):(
+        <div className='inactive-player-display'>
+          <button id='activate-player-button' className="activate-player-button" onClick={activatePlayer}>Click here to play your music</button>
+        </div>
+        )
+      }
     </>
   );
 }
