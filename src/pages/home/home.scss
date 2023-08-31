@@ -31,6 +31,7 @@
       transform: scale(1);
     }
 }
+
 @keyframes circlePulse {
     0% {
         transform: scale(1);
@@ -43,6 +44,14 @@
     }
 }
 
+@keyframes rotate {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 /* Global Styles */
 :root {
@@ -127,62 +136,78 @@
             margin-top: 5vh;
         }       
     } 
-        //holds the SDK player element
-        .player-container{
-            display: flex;
-            position: fixed;
+    .player-container {
+        display: flex;
+        position: fixed;
+        justify-content: center;
+        top: 90vh;
+        height: 10vh;
+        width: 100%;
+        margin-bottom: 0;
+        background: transparent;
+        z-index: 1; /* Ensure it's above the footer */
+      
+        .now-playing-display {
+          margin: 5px;
+          display: flex;
+          width: 30vh;
+          background: rgba(173, 173, 173, 0.9);
+          border-radius: 15px;
+      
+          .now-playing-circle {
+            flex: 33%;
+          }
+      
+          .now-playing-info {
+            color:rgb(255, 255, 255);
+            flex: 66%;
             justify-content: center;
-            top: 95vh;
-            height: 5vh;
-            width: 100%;
-            margin-bottom:0;
-            color:rgb(179, 179, 179);
-            background: linear-gradient(to bottom, transparent, rgb(64, 64, 64));
-            z-index: 0; /* Ensure it's above the footer */
-
-            .now-playing-info{
-                position: relative;
-                left: 60vw;
-                align-items: center;
-                justify-content: center;
-            }
-        }
-
-        .footer-container {
-            width: 100%;
-            height:10vh;
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            font-family: 'Circle Light';
+            flex-direction: column;
+            height: 100%;
             position: relative;
-            color: rgb(179, 179, 179);
-            background-color: transparent;
-            bottom: 0;
-            margin-top: 0;
-            margin-bottom: 0;
+            padding: 1vh;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+      
+    .footer-container {
+        width: 100%;
+        height:10vh;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        font-family: 'Circle Light';
+        position: relative;
+        color: rgb(179, 179, 179);
+        background-color: transparent;
+        bottom: 0;
+        margin-top: 0;
+        margin-bottom: 0;
 
-            .name,
-            .github,
-            .linkedIn {
-                display: flex;
-                align-items: center;
-                padding: 0 10px; 
-                .link{
-                    text-decoration: none;
-                    color: rgb(179, 179, 179);
-                    img {
-                        transform: translateY(-3px); /* You can adjust the value to fine-tune the alignment */
-                        vertical-align: middle;
-                    }
+        .name,
+        .github,
+        .linkedIn {
+            display: flex;
+            align-items: center;
+            padding: 0 10px; 
+            .link{
+                text-decoration: none;
+                color: rgb(179, 179, 179);
+                img {
+                    transform: translateY(-3px); /* You can adjust the value to fine-tune the alignment */
+                    vertical-align: middle;
                 }
             }
-
-            .github-icon,
-            .linkedIn-icon{
-                margin-right: 5px;
-                width:2vw;
-                height: auto;
-            }
         }
+
+        .github-icon,
+        .linkedIn-icon{
+            margin-right: 5px;
+            width:2vw;
+            height: auto;
+        }
+    }
     }

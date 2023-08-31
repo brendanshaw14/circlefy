@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import PopCircle from './circles/popcircle';
+import PlayerCircle from './circles/playercircle';
 
 function WebPlayback({accessToken, onDeviceLoad}) {
   const [currentTrack, setCurrentTrack] = useState({
@@ -59,17 +59,23 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   
   return (
     <>
-      <PopCircle x='45' y='0' size="5" image= {currentTrack.album.images[0].url}/>
-      <div className="now-playing-info">
-        <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
-        <div className="now-playing-artist">
-          {currentTrack.artists[0].name}
+    {isActive && 
+      <div className='now-playing-display'>
+        <div className='now-playing-circle'>
+          <PlayerCircle x='100' y='5' size="6" image= {currentTrack.album.images[0].url} isPaused={isPaused}/>
         </div>
+        <div className="now-playing-info">
+          <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
+          <div className="now-playing-artist">
+            {currentTrack.artists[0].name}
+          </div>
+          <div className="now-playing__status">
+              {isActive ? (isPaused ? 'Paused' : 'Playing') : 'Not Active'}
+          </div>
 
-        <div className="now-playing-status">
-          {isActive ? (isPaused ? 'Paused' : 'Playing') : 'Not Active'}
         </div>
       </div>
+    }
     </>
   );
 }

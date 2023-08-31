@@ -92,7 +92,6 @@ const Home = () => {
             <header className="header-container"> 
                 <h1 className="title">Circlefy</h1>
             </header>
-            
             <main className="body-container"> 
                 <div className="intro-container"></div>
                 <div className="tracks-container"></div>
