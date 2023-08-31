@@ -1,5 +1,4 @@
 import "./home.scss";
-//import Circle from "../../components/circle"
 import FadeCircle from "../../components/circles/fadecircle";
 import PopCircle from "../../components/circles/popcircle";
 import React, {useState, useEffect} from 'react';
@@ -94,7 +93,8 @@ const Home = () => {
             </header>
             <main className="body-container"> 
                 <div className="intro-container"></div>
-                <div className="tracks-container"></div>
+                <div className="tracks-container">
+                </div>
                 <div className="tracks-container-2"></div>
                 <div className="artist-container"></div>
                 <div className="artist-container-2"></div>

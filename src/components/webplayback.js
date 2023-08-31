@@ -63,8 +63,6 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   const handlePlay = () => {
     playerInstance.togglePlay();
   }
-  
-  
 
   return (
     <>
