@@ -36,6 +36,12 @@ function WebPlayback({accessToken, onDeviceLoad}) {
           onDeviceLoad(device_id);
         });
 
+        document.addEventListener('DOMContentLoaded', () => {
+          document.getElementById("toggle-play").onclick = function() {
+            playerInstance.togglePlay();
+          };
+        });
+
         playerInstance.addListener('not_ready', ({ device_id }) => {
           console.log('Device ID has gone offline', device_id);
         });
@@ -49,8 +55,9 @@ function WebPlayback({accessToken, onDeviceLoad}) {
           playerInstance.getCurrentState().then((state) => {
             setIsActive(!!state);
           });
+          
         });
-
+        
         playerInstance.connect();
       };
     }
@@ -69,12 +76,13 @@ function WebPlayback({accessToken, onDeviceLoad}) {
           <div className="now-playing-artist">
             {currentTrack.artists[0].name}
           </div>
-          <div className="now-playing__status">
-              {isActive ? (isPaused ? 'Paused' : 'Playing') : 'Not Active'}
-          </div>
-
         </div>
-      </div>
+          <div className='play-pause-container'>
+            <button id="play-button" class="play-button">
+              <img className="play-icon" src="/images/play.png" alt="Play Icon" />
+            </button>
+          </div>
+        </div>
     }
     </>
   );

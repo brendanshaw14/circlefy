@@ -148,30 +148,56 @@
         z-index: 1; /* Ensure it's above the footer */
       
         .now-playing-display {
-          margin: 5px;
-          display: flex;
-          width: 30vh;
-          background: rgba(173, 173, 173, 0.9);
-          border-radius: 15px;
+            margin: 10px;
+            display: flex;
+            width: 30vh;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
       
-          .now-playing-circle {
-            flex: 33%;
-          }
+            .now-playing-circle {
+                flex: 30%;
+            }
       
-          .now-playing-info {
-            color:rgb(255, 255, 255);
-            flex: 66%;
-            justify-content: center;
-            flex-direction: column;
-            height: 100%;
-            position: relative;
-            padding: 1vh;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-          }
+            .now-playing-info {
+                color:rgb(87, 87, 87);
+                flex: 50%;
+                max-width: 50%;
+                height: 100%;
+                text-align: center;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+
+                .now-playing-name{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+                .now-playing-artist{
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+            .play-pause-container{
+                flex:20%;
+                max-width: 20%;
+                display: flex;
+                justify-content: center;
+                .play-button{
+                    border: none;
+                    background: none;
+                    .play-icon{
+                        filter: hue-rotate(240deg); /* Change the degree value to adjust the color */
+                        width: 100%;
+                        height: auto;
+                        opacity: 0.5;
+                    }
+                }
+                
+            }
         }
-      }
+    }
       
     .footer-container {
         width: 100%;

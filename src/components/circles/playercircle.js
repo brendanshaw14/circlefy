@@ -3,7 +3,7 @@ import '../../pages/home/home.scss'
 
 const PlayerCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, isPaused}) => {
 
-    const actualX = (visualViewport.width/2)-(0.1*visualViewport.height);
+    const actualX = (visualViewport.width/2)-(0.11*visualViewport.height);
     const actualY = (y / 100) * visualViewport.height;
     const actualSize = (size / 100)*visualViewport.height;
 
