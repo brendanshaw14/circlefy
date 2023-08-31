@@ -11,6 +11,7 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   });
   const [isPaused, setIsPaused] = useState(false);
   const [isActive, setIsActive] = useState(false);
+  const [playerInstance, setPlayerInstance] = useState(false);
 
   useEffect(() => {
     if (!window.Spotify){
@@ -22,48 +23,49 @@ function WebPlayback({accessToken, onDeviceLoad}) {
 
       console.log(accessToken);
       window.onSpotifyWebPlaybackSDKReady = () => {
-        const playerInstance = new window.Spotify.Player({
-          name: 'Web Playback SDK',
+        const player = new window.Spotify.Player({
+          name: 'Circlefy',
           getOAuthToken: (cb) => {
             cb(accessToken);
           },
           volume: 0.5
         });
+        setPlayerInstance(player);
 
 
-        playerInstance.addListener('ready', ({ device_id }) => {
+        player.addListener('ready', ({ device_id }) => {
           console.log('Ready with Device ID', device_id);
           onDeviceLoad(device_id);
         });
 
-        document.addEventListener('DOMContentLoaded', () => {
-          document.getElementById("toggle-play").onclick = function() {
-            playerInstance.togglePlay();
-          };
-        });
-
-        playerInstance.addListener('not_ready', ({ device_id }) => {
+        player.addListener('not_ready', ({ device_id }) => {
           console.log('Device ID has gone offline', device_id);
         });
 
-        playerInstance.addListener('player_state_changed', (state) => {
+        player.addListener('player_state_changed', (state) => {
           if (!state) return;
 
           setCurrentTrack(state.track_window.current_track);
           setIsPaused(state.paused);
 
-          playerInstance.getCurrentState().then((state) => {
+          player.getCurrentState().then((state) => {
             setIsActive(!!state);
           });
           
         });
         
-        playerInstance.connect();
+        player.connect();
       };
     }
   // eslint-disable-next-line
   }, [accessToken]);
+
+  const handlePlay = () => {
+    playerInstance.togglePlay();
+  }
   
+  
+
   return (
     <>
     {isActive && 
@@ -78,8 +80,8 @@ function WebPlayback({accessToken, onDeviceLoad}) {
           </div>
         </div>
           <div className='play-pause-container'>
-            <button id="play-button" class="play-button">
-              <img className="play-icon" src="/images/play.png" alt="Play Icon" />
+            <button id="play-button" className="play-button" onClick={handlePlay}>
+              <img className="play-icon" src="/images/play.png" alt="Play Icon"/>
             </button>
           </div>
         </div>
