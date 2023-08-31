@@ -78,9 +78,15 @@ function WebPlayback({accessToken, onDeviceLoad}) {
           </div>
         </div>
           <div className='play-pause-container'>
-            <button id="play-button" className="play-button" onClick={handlePlay}>
-              <img className="play-icon" src="/images/play.png" alt="Play Icon"/>
-            </button>
+            {isPaused ? (
+              <button id="play-button" className="play-button" onClick={handlePlay}>
+                <img className="play-icon" src="/images/play.png" alt="Play Icon"/>
+              </button>
+              ):(
+              <button id="play-button" className="play-button" onClick={handlePlay}>
+                <img className="play-icon" src="/images/pause.png" alt="Pause Icon"/>
+              </button>)
+            }
           </div>
         </div>
     }

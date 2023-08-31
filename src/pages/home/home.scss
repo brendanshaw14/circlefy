@@ -180,8 +180,8 @@
                 }
             }
             .play-pause-container{
+                cursor: pointer;
                 flex:20%;
-                max-width: 20%;
                 display: flex;
                 justify-content: center;
                 .play-button{
@@ -193,6 +193,9 @@
                         height: auto;
                         opacity: 0.5;
                     }
+                }
+                .play-button:hover{
+                    transform: scale(1.1);
                 }
                 
             }
