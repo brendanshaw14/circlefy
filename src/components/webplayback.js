@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PlayerCircle from './circles/playercircle';
 
-function WebPlayback({accessToken, onDeviceLoad}) {
+function WebPlayback({accessToken, onDeviceLoad, onPlayerActivation}) {
   const [currentTrack, setCurrentTrack] = useState({
     name: '',
     album: {
@@ -21,7 +21,6 @@ function WebPlayback({accessToken, onDeviceLoad}) {
 
       document.head.appendChild(script);
 
-      console.log(accessToken);
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
           name: 'Circlefy',
@@ -65,6 +64,7 @@ function WebPlayback({accessToken, onDeviceLoad}) {
   }
   const activatePlayer = () => {
     playerInstance.activateElement();
+    onPlayerActivation(true);
   }
 
   return (

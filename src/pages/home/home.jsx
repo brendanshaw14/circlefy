@@ -28,6 +28,7 @@ const Home = () => {
 
     const [accessToken, setAccessToken] = useState(null);
     const [deviceId, setDeviceId] = useState('');
+    const [playerActivated, setPlayerActivated] = useState('');
 
     useEffect(() => {
       init()
@@ -60,6 +61,7 @@ const Home = () => {
         getTracks(accessToken)
         .then(data => {
             tracksData = data;
+            console.log(tracksData);
         })
         .catch(error => {
             console.error('Error fetching track data:', error);
@@ -77,14 +79,25 @@ const Home = () => {
         });
     }
 
-        const handleIdLoad = (newDeviceId) => {
-            console.log(newDeviceId); // Logs the newDeviceId immediately
-            setDeviceId(newDeviceId); // Schedules a state update
-        };
-    
-        useEffect(() => {
+    const handleIdLoad = (newDeviceId) => {
+        setDeviceId(newDeviceId); // Schedules a state update
+    };
+
+    const onPlayerActivation = (playerActivated) => {
+        setPlayerActivated(playerActivated); // Schedules a state update
+    };
+
+    useEffect(() => {
+        if (playerActivated){
+            console.log(playerActivated); // Logs the updated value of deviceId
             console.log(deviceId); // Logs the updated value of deviceId
-        }, [deviceId]);
+            playIntroSong(accessToken, tracksData, deviceId)
+            .then(data => {
+                console.log("Intro: "+ data);
+            })
+        }
+        // eslint-disable-next-line
+    }, [playerActivated]);
 
     return (
         <div className="home">
@@ -101,7 +114,7 @@ const Home = () => {
             </main>
             <div className="player-container">
                 {accessToken && (
-                    <WebPlayback accessToken={accessToken} onDeviceLoad={handleIdLoad}/>
+                    <WebPlayback accessToken={accessToken} onDeviceLoad={handleIdLoad} onPlayerActivation={onPlayerActivation}/>
                 )}
             </div>
             <footer className="footer-container">
@@ -381,6 +394,33 @@ function renderArtistsContainer2(artistData){
     );
 }
 
+async function playIntroSong(accessToken, tracksData, deviceId){
+    try{
+        const songURLs = tracksData.items.map(track => track.uri);
+        console.log(accessToken);
+        return fetch('https://api.spotify.com/v1/me/player/play', {
+            method: 'PUT', 
+            headers: {
+                Authorization: 'Bearer ' + accessToken, 
+                'Content-Type': 'application/json', 
+            }, 
+            body: JSON.stringify({ 
+                uris: [`spotify:track:${songURLs[9]}`], 
+                offset: {
+                    position: 5
+                },
+                position_ms: 0
+            })
+        })
+        .then((response) => {
+            return response.json();
+        });
+    }
+    catch (error){
+        console.error('Error playing the song: ', error);
+    }
+
+}
 /****Things to add: 
  * Valence: happiness
  * BPM??
