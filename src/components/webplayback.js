@@ -32,12 +32,12 @@ function WebPlayback({ accessToken, onDeviceLoad, onPlayerActivation }) {
         playerInstanceRef.current = player; // Assign to the ref
 
         playerInstanceRef.current.addListener('ready', ({ device_id }) => {
-          console.log('Ready with Device ID', device_id);
+          //console.log('Ready with Device ID', device_id);
           onDeviceLoad(device_id);
         });
 
         playerInstanceRef.current.addListener('not_ready', ({ device_id }) => {
-          console.log('Device ID has gone offline', device_id);
+          //console.log('Device ID has gone offline', device_id);
         });
 
         playerInstanceRef.current.addListener('player_state_changed', (state) => {
@@ -61,7 +61,6 @@ function WebPlayback({ accessToken, onDeviceLoad, onPlayerActivation }) {
     playerInstanceRef.current.togglePlay();
   };
   const activatePlayer = () => {
-    console.log("cum");
     playerInstanceRef.current.activateElement();
     onPlayerActivation(true);
   };

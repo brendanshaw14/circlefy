@@ -159,7 +159,6 @@
             }
       
             .now-playing-info {
-                color:rgb(87, 87, 87);
                 flex: 50%;
                 max-width: 50%;
                 height: 100%;
@@ -169,11 +168,14 @@
                 justify-content: center;
 
                 .now-playing-name{
+                    color:rgb(87, 87, 87);
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;
                 }
                 .now-playing-artist{
+                    color:rgb(123, 123, 123);
+                    font-size: 0.8em;
                     white-space: nowrap;
                     overflow: hidden;
                     text-overflow: ellipsis;

@@ -64,7 +64,11 @@ const Home = () => {
             console.error('Error fetching track data:', error);
         });
         
-        //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+        
+    }
+
+    //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+    if (accessToken){
         window.addEventListener('scroll', () => {
             const scrolly = window.scrollY;
             const windowHeight = window.innerHeight;
@@ -72,33 +76,25 @@ const Home = () => {
             if (index > maxIndex){
                 renderFunctions[index-1]();
                 maxIndex = index;
+                if (playerActivated){
+                    playTrack(accessToken, tracksData, deviceId, index-1);
+                }
             }
-        });
+        });   
     }
-    else if (accessToken && playerActivated){
-        console.log("access token fetched and player activated");
-    }
-    else{
-        console.log("no access token");
-    }
-
+    
     const handleIdLoad = (newDeviceId) => {
         deviceId = newDeviceId; 
     };
 
     const onPlayerActivation = (activated) => {
-        console.log("home player activated");
         setPlayerActivated(activated); 
     };
 
     useEffect(() => {
         if (playerActivated){
-            console.log(playerActivated); // Logs the updated value of deviceId
-            console.log(deviceId); // Logs the updated value of deviceId
-            playIntroSong(accessToken, tracksData, deviceId)
-            .then(data => {
-                console.log("Intro: "+ data);
-            })
+            pausePlayer(accessToken, deviceId);
+            playTrack(accessToken, tracksData, deviceId, 9);
         }
         else{
             console.log("player not activated");
@@ -401,10 +397,10 @@ function renderArtistsContainer2(artistData){
     );
 }
 
-async function playIntroSong(accessToken, tracksData, deviceId){
+async function playTrack(accessToken, tracksData, deviceId, trackNumber){
     try{
-        const songURLs = tracksData.items.map(track => track.uri);
-        console.log(accessToken);
+        const tracks = tracksData.items.map(track => track);
+        const duration = Math.floor((tracks[trackNumber].duration_ms)/3);
         return fetch('https://api.spotify.com/v1/me/player/play?device_id='+deviceId, {
             method: 'PUT', 
             headers: {
@@ -412,11 +408,11 @@ async function playIntroSong(accessToken, tracksData, deviceId){
                 'Content-Type': 'application/json', 
             }, 
             body: JSON.stringify({ 
-                uris: [`${songURLs[9]}`], 
+                uris: [`${tracks[trackNumber].uri}`], 
                 offset: {
                     position: 0
                 },
-                position_ms: 10
+                position_ms: `${duration}`
             })
         })
     }
@@ -425,6 +421,21 @@ async function playIntroSong(accessToken, tracksData, deviceId){
     }
 
 }
+
+async function pausePlayer(accessToken, deviceId){
+    try{
+        return fetch('https://api.spotify.com/v1/me/player/pause?device_id='+deviceId, {
+            method: 'PUT', 
+            headers: {
+                Authorization: 'Bearer ' + accessToken, 
+            }, 
+        })
+    }
+    catch (error){
+        console.error('Error playing the song: ', error);
+    }
+}
+
 /****Things to add: 
  * Valence: happiness
  * BPM??
