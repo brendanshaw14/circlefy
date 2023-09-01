@@ -10,12 +10,9 @@ const clientId = 'a27fb42203c6414fa9076b4f545bc38a';
 const redirectUri = 'http://localhost:3000/home/';
 
 let username; 
-// eslint-disable-next-line
-let profileData;
-// eslint-disable-next-line
 let artistData;
-// eslint-disable-next-line
 let tracksData;
+let deviceId;
 
 const renderFunctions = [
     () => renderTracksContainer(tracksData), 
@@ -27,10 +24,10 @@ const renderFunctions = [
 const Home = () => {
 
     const [accessToken, setAccessToken] = useState(null);
-    const [deviceId, setDeviceId] = useState('');
-    const [playerActivated, setPlayerActivated] = useState('');
+    const [playerActivated, setPlayerActivated] = useState(null);
 
     useEffect(() => {
+        console.log("doing init");
       init()
         .then((accessToken) => {
           setAccessToken(accessToken);
@@ -41,10 +38,9 @@ const Home = () => {
     }, []);
     let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
-    if (accessToken) {
+    if (accessToken && (!playerActivated)) {
         getProfile(accessToken)
         .then(data => {
-            profileData = data;
             username = data.display_name;
         })
         .catch(error => {
@@ -53,6 +49,7 @@ const Home = () => {
         getArtists(accessToken)
         .then(data => {
             artistData = data;
+            console.log(artistData);
             renderIntroContainer(artistData, username);
         })
         .catch(error => {
@@ -78,13 +75,20 @@ const Home = () => {
             }
         });
     }
+    else if (accessToken && playerActivated){
+        console.log("access token fetched and player activated");
+    }
+    else{
+        console.log("no access token");
+    }
 
     const handleIdLoad = (newDeviceId) => {
-        setDeviceId(newDeviceId); // Schedules a state update
+        deviceId = newDeviceId; 
     };
 
-    const onPlayerActivation = (playerActivated) => {
-        setPlayerActivated(playerActivated); // Schedules a state update
+    const onPlayerActivation = (activated) => {
+        console.log("home player activated");
+        setPlayerActivated(activated); 
     };
 
     useEffect(() => {
@@ -95,6 +99,9 @@ const Home = () => {
             .then(data => {
                 console.log("Intro: "+ data);
             })
+        }
+        else{
+            console.log("player not activated");
         }
         // eslint-disable-next-line
     }, [playerActivated]);
@@ -285,7 +292,7 @@ async function getTracks(accessToken) {
 
 function renderIntroContainer(artistData, username){
     try{
-        const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+        const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); 
         createRoot(document.querySelector('.intro-container')).render(
             <div>
                 <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
@@ -398,23 +405,20 @@ async function playIntroSong(accessToken, tracksData, deviceId){
     try{
         const songURLs = tracksData.items.map(track => track.uri);
         console.log(accessToken);
-        return fetch('https://api.spotify.com/v1/me/player/play', {
+        return fetch('https://api.spotify.com/v1/me/player/play?device_id='+deviceId, {
             method: 'PUT', 
             headers: {
                 Authorization: 'Bearer ' + accessToken, 
                 'Content-Type': 'application/json', 
             }, 
             body: JSON.stringify({ 
-                uris: [`spotify:track:${songURLs[9]}`], 
+                uris: [`${songURLs[9]}`], 
                 offset: {
-                    position: 5
+                    position: 0
                 },
-                position_ms: 0
+                position_ms: 10
             })
         })
-        .then((response) => {
-            return response.json();
-        });
     }
     catch (error){
         console.error('Error playing the song: ', error);

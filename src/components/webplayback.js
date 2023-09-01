@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PlayerCircle from './circles/playercircle';
 
-function WebPlayback({accessToken, onDeviceLoad, onPlayerActivation}) {
+function WebPlayback({ accessToken, onDeviceLoad, onPlayerActivation }) {
   const [currentTrack, setCurrentTrack] = useState({
     name: '',
     album: {
@@ -11,10 +11,10 @@ function WebPlayback({accessToken, onDeviceLoad, onPlayerActivation}) {
   });
   const [isPaused, setIsPaused] = useState(false);
   const [isActive, setIsActive] = useState(false);
-  const [playerInstance, setPlayerInstance] = useState(false);
+  const playerInstanceRef = useRef(null); // Initialize as null using useRef
 
   useEffect(() => {
-    if (!window.Spotify){
+    if (!window.Spotify) {
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
       script.async = true;
@@ -29,50 +29,49 @@ function WebPlayback({accessToken, onDeviceLoad, onPlayerActivation}) {
           },
           volume: 0.5
         });
-        setPlayerInstance(player);
+        playerInstanceRef.current = player; // Assign to the ref
 
-
-        player.addListener('ready', ({ device_id }) => {
+        playerInstanceRef.current.addListener('ready', ({ device_id }) => {
           console.log('Ready with Device ID', device_id);
           onDeviceLoad(device_id);
         });
 
-        player.addListener('not_ready', ({ device_id }) => {
+        playerInstanceRef.current.addListener('not_ready', ({ device_id }) => {
           console.log('Device ID has gone offline', device_id);
         });
 
-        player.addListener('player_state_changed', (state) => {
+        playerInstanceRef.current.addListener('player_state_changed', (state) => {
           if (!state) return;
 
           setCurrentTrack(state.track_window.current_track);
           setIsPaused(state.paused);
 
-          player.getCurrentState().then((state) => {
-            setIsActive(!!state);
-          });
-          
+          playerInstanceRef.current.getCurrentState().then( state => { ;
+            (!state)? setIsActive(false) : setIsActive(true) 
         });
-        
-        player.connect();
+        });
+        playerInstanceRef.current.connect();
+
       };
     }
-  // eslint-disable-next-line
+    // eslint-disable-next-line
   }, [accessToken]);
 
   const handlePlay = () => {
-    playerInstance.togglePlay();
-  }
+    playerInstanceRef.current.togglePlay();
+  };
   const activatePlayer = () => {
-    playerInstance.activateElement();
+    console.log("cum");
+    playerInstanceRef.current.activateElement();
     onPlayerActivation(true);
-  }
+  };
 
   return (
     <>
       {isActive ? (
         <div className='now-playing-display'>
           <div className='now-playing-circle'>
-            <PlayerCircle x='100' y='5' size="6" image= {currentTrack.album.images[0].url} isPaused={isPaused}/>
+            <PlayerCircle x='100' y='5' size="6" image={currentTrack.album.images[0].url} isPaused={isPaused} />
           </div>
           <div className="now-playing-info">
             <div className="now-playing-name">{currentTrack.name || 'Untitled'}</div>
@@ -83,19 +82,19 @@ function WebPlayback({accessToken, onDeviceLoad, onPlayerActivation}) {
           <div className='play-pause-container'>
             {isPaused ? (
               <button id="play-button" className="play-button" onClick={handlePlay}>
-                <img className="play-icon" src="/images/play.png" alt="Play Icon"/>
+                <img className="play-icon" src="/images/play.png" alt="Play Icon" />
               </button>
-              ):(
-              <button id="play-button" className="play-button" onClick={handlePlay}>
-                <img className="play-icon" src="/images/pause.png" alt="Pause Icon"/>
-              </button>)
-            }
+            ) : (
+                <button id="play-button" className="play-button" onClick={handlePlay}>
+                  <img className="play-icon" src="/images/pause.png" alt="Pause Icon" />
+                </button>
+              )}
           </div>
         </div>
-      ):(
-        <div className='inactive-player-display'>
-          <button id='activate-player-button' className="activate-player-button" onClick={activatePlayer}>Click here to play your music</button>
-        </div>
+      ) : (
+          <div className='inactive-player-display'>
+            <button id='activate-player-button' className="activate-player-button" onClick={activatePlayer}>Click here to play your music</button>
+          </div>
         )
       }
     </>
