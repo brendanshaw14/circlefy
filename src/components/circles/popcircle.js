@@ -3,17 +3,6 @@ import '../../pages/home/home.scss'
 
 const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, artist, clickHandler}) => {
     const [isVisible, setIsVisible] = useState(false);
-
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setIsVisible(true);
-        }, delay * 1000);
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [delay]);
-
     const isImage = (song ? true : false) || (artist ? true: false);
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
 
@@ -24,6 +13,17 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     const animationStyle = {
         animation: 'pop-in 0.2s ease-in, circlePulse 4s infinite ease-in-out 0.2s', 
     }
+
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setIsVisible(true);
+        }, delay * 1000);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [delay]);
 
     return (
         isVisible &&( 
@@ -41,7 +41,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                         y={(actualSize - actualSize * scale) / 2}
                         width={actualSize * scale}
                         height={actualSize * scale}
-                        href={song? (song.album.images[0].url):(artist.images[0].url)}
+                        href={artist? (artist.images[0].url):(song.album.images[0].url)}
                         clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                     />
                 ) : (

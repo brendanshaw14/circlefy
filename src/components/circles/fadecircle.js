@@ -1,21 +1,9 @@
 import React, {useState, useEffect} from 'react';
+import '../../pages/home/home.scss'
 
-const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label}) => {
+const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, artist, clickHandler}) => {
     const [isVisible, setIsVisible] = useState(false);
-
-    // Apply visibility with delay
-    useEffect(() => {
-        const timeoutId = setTimeout(() => {
-            setIsVisible(true);
-        }, delay * 1000);
-
-        return () => {
-            clearTimeout(timeoutId);
-        };
-    }, [delay]);
-    const isImage = !!image;
-
-    // Convert percentage values to actual pixel values
+    const isImage = (song ? true : false) || (artist ? true: false);
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
 
     const actualX = (x / 100) * visualViewport.width;
@@ -26,41 +14,47 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
         animation: 'fade-in 2s ease-in, circlePulse 4s infinite ease-in-out',
     }
 
+    if (artist){
+        console.log(artist.images[0].url);
+    }
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            setIsVisible(true);
+        }, delay * 1000);
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [delay]);
+
     return (
         isVisible &&( 
-        <div style={{ textAlign: 'center' }}>
-            <svg className="circle-svg" style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2, ":hover": {transform: 'scale(1.1)'}}} width={actualSize} height={actualSize}>
+        <div style={{ textAlign: 'center', justifyContent: 'center', width: '0px', height: '0px' }}>
+            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize} onClick={clickHandler ? () => clickHandler(song) : undefined}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                         <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
                     </clipPath>
                 </defs>
-                <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} style={{transition: 'r 0.2s ease-in-out'}}/>
+                <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} fill={color} />
                 {isImage ? (
                     <image
                         x={(actualSize - actualSize * scale) / 2}
                         y={(actualSize - actualSize * scale) / 2}
                         width={actualSize * scale}
                         height={actualSize * scale}
-                        href={image}
+                        href={artist ? (artist.images[0].url):(song.album.images[0].url)}
                         clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                     />
                 ) : (
-                    <foreignObject x={0} y={0} width={actualSize} height={actualSize} style={{display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                        <div
+                    <foreignObject x={0} y={0} width={actualSize} height={actualSize}>
+                        <div className='circle-text-container'
                             xmlns="http://www.w3.org/1999/xhtml"
                             style={{
-                                position: 'absolute', 
-                                width: '80%', 
-                                height: '80%', 
                                 overflowWrap: 'break-word',
-                                display: 'flex', 
-                                alignItems: 'center', // Vertically center content
-                                justifyContent: 'center',
                                 color: 'white',
-                                textAlign: 'center',
                                 fontSize: `${actualSize * 0.10}px`,
-                                padding: '10%'
+                                padding: `${actualSize * 0.10}px`,
                             }}
                         >
                             <p>
@@ -81,6 +75,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
                     marginTop: '20px',
                     color: 'white',
                     textAlign: 'center',
+                    justifyContent: 'center'
                 }}
             >
                 {label}
