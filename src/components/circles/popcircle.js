@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import '../../pages/home/home.scss'
 
-const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, clickHandler}) => {
+const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, artist, clickHandler}) => {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -14,7 +14,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
         };
     }, [delay]);
 
-    const isImage = song ? true : false;
+    const isImage = (song ? true : false) || (artist ? true: false);
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
 
     const actualX = (x / 100) * visualViewport.width;
@@ -28,7 +28,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
     return (
         isVisible &&( 
         <div style={{ textAlign: 'center', justifyContent: 'center', width: '0px', height: '0px' }}>
-            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize} onClick={() => clickHandler(song)}>
+            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize} onClick={clickHandler ? () => clickHandler(song) : undefined}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                         <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />
@@ -41,7 +41,7 @@ const PopCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, s
                         y={(actualSize - actualSize * scale) / 2}
                         width={actualSize * scale}
                         height={actualSize * scale}
-                        href={image ? (image):(song.album.images[0].url)}
+                        href={song? (song.album.images[0].url):(artist.images[0].url)}
                         clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                     />
                 ) : (
