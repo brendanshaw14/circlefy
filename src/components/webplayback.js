@@ -60,6 +60,7 @@ function WebPlayback({ accessToken, onDeviceLoad, onPlayerActivation }) {
   const handlePlay = () => {
     playerInstanceRef.current.togglePlay();
   };
+
   const activatePlayer = () => {
     playerInstanceRef.current.activateElement();
     onPlayerActivation(true);

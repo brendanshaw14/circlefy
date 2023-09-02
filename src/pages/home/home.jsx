@@ -14,27 +14,32 @@ let artistData;
 let tracksData;
 let deviceId;
 
-const renderFunctions = [
-    () => renderTracksContainer(tracksData), 
-    () => renderTracksContainer2(tracksData), 
-    () => renderArtistsContainer(artistData, username), 
-    () => renderArtistsContainer2(artistData, username),
-];
+
 
 const Home = () => {
 
+    const handleClick = (song) => {
+        playTrack(accessToken, song, deviceId)
+    }
+    const renderFunctions = [
+        () => renderTracksContainer(tracksData, handleClick), 
+        () => renderTracksContainer2(tracksData), 
+        () => renderArtistsContainer(artistData, username), 
+        () => renderArtistsContainer2(artistData, username),
+    ];
     const [accessToken, setAccessToken] = useState(null);
     const [playerActivated, setPlayerActivated] = useState(null);
 
     useEffect(() => {
-        console.log("doing init");
-      init()
-        .then((accessToken) => {
-          setAccessToken(accessToken);
-        })
-        .catch((error) => {
-          console.error('Error during initialization:', error);
-        });
+        window.scrollTo(0, 0);
+        init()
+            .then((accessToken) => {
+            setAccessToken(accessToken);
+            })
+            .catch((error) => {
+            console.error('Error during initialization:', error);
+            });
+        
     }, []);
     let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
@@ -63,26 +68,26 @@ const Home = () => {
         .catch(error => {
             console.error('Error fetching track data:', error);
         });
-        
-        
-    }
 
-    //scroll handling function: determine which container is rendered by dividing scroll distance by container height
+          
+    }
     if (accessToken){
+        //scroll handling function: determine which container is rendered by dividing scroll distance by container height
         window.addEventListener('scroll', () => {
             const scrolly = window.scrollY;
             const windowHeight = window.innerHeight;
             const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.9));
             if (index > maxIndex){
-                renderFunctions[index-1]();
                 maxIndex = index;
+                renderFunctions[index-1]();
                 if (playerActivated){
-                    playTrack(accessToken, tracksData, deviceId, index-1);
+                    console.log("Play track: " + index-1);
+                    playTrack(accessToken, tracksData.items[index-1], deviceId);
                 }
             }
-        });   
+        }); 
     }
-    
+
     const handleIdLoad = (newDeviceId) => {
         deviceId = newDeviceId; 
     };
@@ -91,10 +96,11 @@ const Home = () => {
         setPlayerActivated(activated); 
     };
 
+    
+
     useEffect(() => {
         if (playerActivated){
-            pausePlayer(accessToken, deviceId);
-            playTrack(accessToken, tracksData, deviceId, 9);
+            playTrack(accessToken, tracksData.items[9], deviceId);
         }
         else{
             console.log("player not activated");
@@ -288,18 +294,18 @@ async function getTracks(accessToken) {
 
 function renderIntroContainer(artistData, username){
     try{
-        const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); 
+        const artists = artistData.items.map(artist => artist); 
         createRoot(document.querySelector('.intro-container')).render(
             <div>
                 <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
-                <FadeCircle x = '10' y = '10' size = "18" image={profilePhotoUrls[7]} delay='0.5'/>
-                <FadeCircle x = '30' y = '95' size = "6" image={profilePhotoUrls[2]} delay='0.6'/>
-                <FadeCircle x = '18' y = '35' size = "8" image={profilePhotoUrls[5]} delay='0.7'/>
-                <FadeCircle x = '15' y = '80' size = "25" image={profilePhotoUrls[0]} delay='0.8'/>
-                <FadeCircle x = '60' y = '85' size = "12" image={profilePhotoUrls[14]} delay='0.9'/>
-                <FadeCircle x = '90' y = '92' size = "15" image={profilePhotoUrls[4]} delay='1.0'/>
-                <FadeCircle x = '64' y = '15' size = "8" image={profilePhotoUrls[8]} delay='1.1'/>
-                <FadeCircle x = '90' y = '15' size = "15" image={profilePhotoUrls[1]} delay='1.2'/>
+                <FadeCircle x = '10' y = '10' size = "18" image={artists[7].images[1].url} delay='0.5'/>
+                <FadeCircle x = '30' y = '95' size = "6" image={artists[2].images[1].url} delay='0.6'/>
+                <FadeCircle x = '18' y = '35' size = "8" image={artists[5].images[1].url} delay='0.7'/>
+                <FadeCircle x = '15' y = '80' size = "25" image={artists[0].images[1].url} delay='0.8'/>
+                <FadeCircle x = '60' y = '85' size = "12" image={artists[14].images[1].url} delay='0.9'/>
+                <FadeCircle x = '90' y = '92' size = "15" image={artists[4].images[1].url} delay='1.0'/>
+                <FadeCircle x = '64' y = '15' size = "8" image={artists[8].images[1].url} delay='1.1'/>
+                <FadeCircle x = '90' y = '15' size = "15" image={artists[1].images[1].url} delay='1.2'/>
                 <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Scroll down for a look at your listening this month"} delay='1.7'/>
             </div>, 
         );
@@ -310,17 +316,16 @@ function renderIntroContainer(artistData, username){
 }
 
 //renders the components of the tracks container
-function renderTracksContainer(trackData) {
+function renderTracksContainer(trackData, handleClick) {
     try {
-        const songPhotoUrls = trackData.items.map(track => track.album.images[0]?.url);
         createRoot(document.querySelector('.tracks-container')).render(
             <div>
                 <FadeCircle x="50" y="15" size="30" color="#ffe80b" text={`This month, your top tracks were:`} />
-                <PopCircle x="10" y="70" size="15" image={songPhotoUrls[0]} label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay="7" />
-                <PopCircle x="30" y="70" size="15" image={songPhotoUrls[1]} label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay="6" />
-                <PopCircle x="50" y="70" size="15" image={songPhotoUrls[2]} label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay="5" />
-                <PopCircle x="70" y="70" size="15" image={songPhotoUrls[3]} label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay="4" />
-                <PopCircle x="90" y="70" size="15" image={songPhotoUrls[4]} label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay="3" />
+                <PopCircle x="10" y="70" size="15" label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay="7" song={trackData.items[0]} clickHandler={handleClick}/>
+                <PopCircle x="30" y="70" size="15" label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay="6" song={trackData.items[1]} clickHandler={handleClick}/>
+                <PopCircle x="50" y="70" size="15" label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay="5" song={trackData.items[2]} clickHandler={handleClick}/>
+                <PopCircle x="70" y="70" size="15" label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay="4" song={trackData.items[3]} clickHandler={handleClick}/>
+                <PopCircle x="90" y="70" size="15" label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay="3" song={trackData.items[4]} clickHandler={handleClick}/>
             </div>
         );
     } catch (error) {
@@ -397,10 +402,10 @@ function renderArtistsContainer2(artistData){
     );
 }
 
-async function playTrack(accessToken, tracksData, deviceId, trackNumber){
+async function playTrack(accessToken, track, deviceId){
     try{
-        const tracks = tracksData.items.map(track => track);
-        const duration = Math.floor((tracks[trackNumber].duration_ms)/3);
+        console.log(track.uri);
+        const duration = Math.floor((track.duration_ms)/3);
         return fetch('https://api.spotify.com/v1/me/player/play?device_id='+deviceId, {
             method: 'PUT', 
             headers: {
@@ -408,7 +413,7 @@ async function playTrack(accessToken, tracksData, deviceId, trackNumber){
                 'Content-Type': 'application/json', 
             }, 
             body: JSON.stringify({ 
-                uris: [`${tracks[trackNumber].uri}`], 
+                uris: [`${track.uri}`], 
                 offset: {
                     position: 0
                 },
@@ -422,6 +427,7 @@ async function playTrack(accessToken, tracksData, deviceId, trackNumber){
 
 }
 
+// eslint-disable-next-line
 async function pausePlayer(accessToken, deviceId){
     try{
         return fetch('https://api.spotify.com/v1/me/player/pause?device_id='+deviceId, {
@@ -435,6 +441,7 @@ async function pausePlayer(accessToken, deviceId){
         console.error('Error playing the song: ', error);
     }
 }
+
 
 /****Things to add: 
  * Valence: happiness
