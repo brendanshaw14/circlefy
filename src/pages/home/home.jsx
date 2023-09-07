@@ -308,7 +308,7 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
                 <FadeCircle x = '90' y = '92' size = "15"artist={artists[4]} song={topSongs[4]} delay='1.0' clickHandler={handleClick}/>
                 <FadeCircle x = '64' y = '15' size = "8" artist={artists[8]} song={topSongs[8]} delay='1.1' clickHandler={handleClick}/>
                 <FadeCircle x = '90' y = '15' size = "15" artist={artists[1]} song={topSongs[1]} delay='1.2' clickHandler={handleClick}/>
-                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Scroll down for a look at your listening this month"} delay='1.7'/>
+                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music- scroll down to begin"} delay='1.7'/>
             </div>, 
         );
     }
@@ -364,8 +364,9 @@ function renderTracksContainer2(trackData, handleClick){
 }
 
 //renders the components of the artists container
-function renderArtistsContainer(artistData){
+async function renderArtistsContainer(artistData, accessToken){
     const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+    //const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
     createRoot(document.querySelector('.artist-container')).render(
         <div>
             <FadeCircle x = '50' y = '15' size = '30' color="#ff59b5" text={`Now on to your favorite artists: Here's who you had on repeat.`}/> 

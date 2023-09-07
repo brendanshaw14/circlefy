@@ -3,7 +3,7 @@ import '../../pages/home/home.scss'
 
 const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, scale = 1.1, delay = 0, label, song, artist, clickHandler}) => {
     const [isVisible, setIsVisible] = useState(false);
-    const isImage = (song ? true : false) || (artist ? true: false);
+    const isImage = (song ? true : false) || (artist ? true: false) || image;
     const stretch = (((visualViewport.width/visualViewport.height)-1)/2)+1;
 
     const actualX = (x / 100) * visualViewport.width;
@@ -14,9 +14,6 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
         animation: 'fade-in 2s ease-in, circlePulse 4s infinite ease-in-out',
     }
 
-    if (artist){
-        console.log(artist.images[0].url);
-    }
     useEffect(() => {
         const timeoutId = setTimeout(() => {
             setIsVisible(true);
@@ -43,7 +40,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
                         y={(actualSize - actualSize * scale) / 2}
                         width={actualSize * scale}
                         height={actualSize * scale}
-                        href={artist ? (artist.images[0].url):(song.album.images[0].url)}
+                        href={image ? (image): (artist ? (artist.images[0].url):(song.album.images[0].url))}
                         clipPath={`url(#circle-clip-${actualX}-${actualY})`}
                     />
                 ) : (
