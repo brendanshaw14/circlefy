@@ -24,8 +24,8 @@ const Home = () => {
     const renderFunctions = [
         () => renderTracksContainer(tracksData, handleClick), 
         () => renderTracksContainer2(tracksData, handleClick), 
-        () => renderArtistsContainer(artistData, username), 
-        () => renderArtistsContainer2(artistData, username),
+        () => renderArtistsContainer(artistData, username, handleClick), 
+        () => renderArtistsContainer2(artistData, username, handleClick),
     ];
     const [accessToken, setAccessToken] = useState(null);
     const [playerActivated, setPlayerActivated] = useState(null);
@@ -364,23 +364,23 @@ function renderTracksContainer2(trackData, handleClick){
 }
 
 //renders the components of the artists container
-async function renderArtistsContainer(artistData, accessToken){
-    const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
-    //const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
+async function renderArtistsContainer(artistData, accessToken, handleClick){
+    const artists = artistData.items.map(artist => artist); //save top artist images in array
+    const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
     createRoot(document.querySelector('.artist-container')).render(
         <div>
             <FadeCircle x = '50' y = '15' size = '30' color="#ff59b5" text={`Now on to your favorite artists: Here's who you had on repeat.`}/> 
-            <PopCircle x = '10' y = '75' size = '15' image={profilePhotoUrls[0]} label={`1. ${artistData.items[0].name}`} delay='5.5' artist={artistData.items[0]}/> 
-            <PopCircle x = '30' y = '75' size = '15' image={profilePhotoUrls[1]} label={`2. ${artistData.items[1].name}`} delay='4.5' artist={artistData.items[1]}/> 
-            <PopCircle x = '50' y = '75' size = '15' image={profilePhotoUrls[2]} label={`3. ${artistData.items[2].name}`} delay='3.5' artist={artistData.items[2]}/> 
-            <PopCircle x = '70' y = '75' size = '15' image={profilePhotoUrls[3]} label={`4. ${artistData.items[3].name}`} delay='2.5' artist={artistData.items[3]}/> 
-            <PopCircle x = '90' y = '75' size = '15' image={profilePhotoUrls[4]} label={`5. ${artistData.items[4].name}`} delay='1.5' artist={artistData.items[4]}/> 
+            <PopCircle x = '10' y = '75' size = '15' label={`1. ${artistData.items[0].name}`} delay='5.5' artist={artistData.items[0]} song={topSongs[0]} clickHandler={handleClick}/> 
+            <PopCircle x = '30' y = '75' size = '15' label={`2. ${artistData.items[1].name}`} delay='4.5' artist={artistData.items[1]} song={topSongs[1]} clickHandler={handleClick}/> 
+            <PopCircle x = '50' y = '75' size = '15' label={`3. ${artistData.items[2].name}`} delay='3.5' artist={artistData.items[2]} song={topSongs[2]} clickHandler={handleClick}/> 
+            <PopCircle x = '70' y = '75' size = '15' label={`4. ${artistData.items[3].name}`} delay='2.5' artist={artistData.items[3]} song={topSongs[3]} clickHandler={handleClick}/> 
+            <PopCircle x = '90' y = '75' size = '15' label={`5. ${artistData.items[4].name}`} delay='1.5' artist={artistData.items[4]} song={topSongs[4]} clickHandler={handleClick}/> 
         </div>
     );
 }
 
 //renders the components of the tracks container
-function renderArtistsContainer2(artistData){
+function renderArtistsContainer2(artistData, handleClick){
     const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
     const artistNames = artistData.items.map(artist => artist.name || "Unknown Artist"); //save top artist images in array
     createRoot(document.querySelector('.artist-container-2')).render(
