@@ -27,7 +27,7 @@ const FadeCircle = ({ color = "#000000", x = 0, y = 0, size = 0.1, image, text, 
     return (
         isVisible &&( 
         <div style={{ textAlign: 'center', justifyContent: 'center', width: '0px', height: '0px' }}>
-            <svg style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize} onClick={clickHandler ? () => clickHandler(song) : undefined}>
+            <svg className="fade-circle" style={{ ...animationStyle, position: 'absolute', left: actualX-actualSize/2, top: actualY-actualSize/2}} width={actualSize} height={actualSize} onClick={clickHandler ? () => clickHandler(song) : undefined}>
                 <defs>
                     <clipPath id={`circle-clip-${actualX}-${actualY}`}>
                         <circle cx={actualSize / 2} cy={actualSize / 2} r={actualSize / 2} />

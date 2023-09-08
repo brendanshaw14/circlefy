@@ -24,8 +24,8 @@ const Home = () => {
     const renderFunctions = [
         () => renderTracksContainer(tracksData, handleClick), 
         () => renderTracksContainer2(tracksData, handleClick), 
-        () => renderArtistsContainer(artistData, username, handleClick), 
-        () => renderArtistsContainer2(artistData, username, handleClick),
+        () => renderArtistsContainer(artistData, accessToken, handleClick), 
+        () => renderArtistsContainer2(artistData, accessToken, handleClick),
     ];
     const [accessToken, setAccessToken] = useState(null);
     const [playerActivated, setPlayerActivated] = useState(null);
@@ -308,7 +308,7 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
                 <FadeCircle x = '90' y = '92' size = "15"artist={artists[4]} song={topSongs[4]} delay='1.0' clickHandler={handleClick}/>
                 <FadeCircle x = '64' y = '15' size = "8" artist={artists[8]} song={topSongs[8]} delay='1.1' clickHandler={handleClick}/>
                 <FadeCircle x = '90' y = '15' size = "15" artist={artists[1]} song={topSongs[1]} delay='1.2' clickHandler={handleClick}/>
-                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music- scroll down to begin"} delay='1.7'/>
+                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music"} delay='1.7'/>
             </div>, 
         );
     }
@@ -365,7 +365,6 @@ function renderTracksContainer2(trackData, handleClick){
 
 //renders the components of the artists container
 async function renderArtistsContainer(artistData, accessToken, handleClick){
-    const artists = artistData.items.map(artist => artist); //save top artist images in array
     const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
     createRoot(document.querySelector('.artist-container')).render(
         <div>
@@ -380,34 +379,63 @@ async function renderArtistsContainer(artistData, accessToken, handleClick){
 }
 
 //renders the components of the tracks container
-function renderArtistsContainer2(artistData, handleClick){
-    const profilePhotoUrls = artistData.items.map(artist => artist.images[1]?.url); //save top artist images in array
+async function renderArtistsContainer2(artistData, accessToken, handleClick){
+    const artists = artistData.items.map(artist => artist); //save top artist images in array
+    const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
     const artistNames = artistData.items.map(artist => artist.name || "Unknown Artist"); //save top artist images in array
     createRoot(document.querySelector('.artist-container-2')).render(
         <div>
             <FadeCircle x = '50' y = '25' size = '30' color="#399fec" text={`And a few others...`}/> 
-            <PopCircle x = '12' y = '10' size = "15" image={profilePhotoUrls[5]} label={`6. ${artistNames[5]}`} delay='2.3'/>
-            <PopCircle x = '12' y = '55' size = "14" image={profilePhotoUrls[6]} label={`7.  ${artistNames[6]}`} delay='2.3'/>
-            <PopCircle x = '28' y = '28' size = "12" image={profilePhotoUrls[7]} label={`8.  ${artistNames[7]}`} delay='2.4'/>
-            <PopCircle x = '35' y = '60' size = "14" image={profilePhotoUrls[8]} label={`9.  ${artistNames[8]}`} delay='2.5'/>
-            <PopCircle x = '22' y = '80' size = "13" image={profilePhotoUrls[9]} label={`10.  ${artistNames[9]}`} delay='2.6'/>
-            <PopCircle x = '49' y = '75' size = "15" image={profilePhotoUrls[10]} label={`11.  ${artistNames[10]}`} delay='2.7'/>
-            <PopCircle x = '33' y = '0' size = "10" image={profilePhotoUrls[11]} label={`12.  ${artistNames[11]}`} delay='2.8'/>
-            <PopCircle x = '72' y = '8' size = "13" image={profilePhotoUrls[12]} label={`13.  ${artistNames[12]}`} delay='2.9'/>
-            <PopCircle x = '65' y = '53' size = "14" image={profilePhotoUrls[13]} label={`14.  ${artistNames[13]}`} delay='3.0'/>
-            <PopCircle x = '79' y = '85' size = "13" image={profilePhotoUrls[14]} label={`15.  ${artistNames[14]}`} delay='3.1'/>
-            <PopCircle x = '64' y = '92' size = "9" image={profilePhotoUrls[15]} label={`16.  ${artistNames[15]}`} delay='3.2'/>
-            <PopCircle x = '92' y = '88' size = "12" image={profilePhotoUrls[16]} label={`17.  ${artistNames[16]}`} delay='3.3'/>
-            <PopCircle x = '80' y = '38' size = "11" image={profilePhotoUrls[17]} label={`18.  ${artistNames[17]}`} delay='3.4'/>
-            <PopCircle x = '88' y = '10' size = "12" image={profilePhotoUrls[18]} label={`19.  ${artistNames[18]}`} delay='3.5'/>
-            <PopCircle x = '91' y = '55' size = "10" image={profilePhotoUrls[19]} label={`20.  ${artistNames[19]}`} delay='3.6'/>
+            <PopCircle x = '12' y = '10' size = "15" label={`6. ${artistNames[5]}`} delay='2.3' song={topSongs[5]} artist={artists[5]} clickHandler={handleClick}/>
+            <PopCircle x = '12' y = '55' size = "14" label={`7.  ${artistNames[6]}`} delay='2.3' song={topSongs[6]} artist={artists[6]} clickHandler={handleClick}/>
+            <PopCircle x = '28' y = '28' size = "12" label={`8.  ${artistNames[7]}`} delay='2.4' song={topSongs[7]} artist={artists[7]} clickHandler={handleClick}/>
+            <PopCircle x = '35' y = '60' size = "14" label={`9.  ${artistNames[8]}`} delay='2.5' song={topSongs[8]} artist={artists[8]} clickHandler={handleClick}/>
+            <PopCircle x = '22' y = '80' size = "13" label={`10.  ${artistNames[9]}`} delay='2.6' song={topSongs[9]} artist={artists[9]} clickHandler={handleClick}/>
+            <PopCircle x = '49' y = '75' size = "15" label={`11.  ${artistNames[10]}`} delay='2.7' song={topSongs[10]} artist={artists[10]} clickHandler={handleClick}/>
+            <PopCircle x = '33' y = '0' size = "10" label={`12.  ${artistNames[11]}`} delay='2.8' song={topSongs[11]} artist={artists[11]} clickHandler={handleClick}/>
+            <PopCircle x = '72' y = '8' size = "13" label={`13.  ${artistNames[12]}`} delay='2.9' song={topSongs[12]} artist={artists[12]} clickHandler={handleClick}/>
+            <PopCircle x = '65' y = '53' size = "14" label={`14.  ${artistNames[13]}`} delay='3.0' song={topSongs[13]} artist={artists[13]} clickHandler={handleClick}/>
+            <PopCircle x = '79' y = '85' size = "13" label={`15.  ${artistNames[14]}`} delay='3.1' song={topSongs[14]} artist={artists[14]} clickHandler={handleClick}/>
+            <PopCircle x = '64' y = '92' size = "9" label={`16.  ${artistNames[15]}`} delay='3.2' song={topSongs[15]} artist={artists[15]} clickHandler={handleClick}/>
+            <PopCircle x = '92' y = '88' size = "12" label={`17.  ${artistNames[16]}`} delay='3.3' song={topSongs[16]} artist={artists[16]} clickHandler={handleClick}/>
+            <PopCircle x = '80' y = '38' size = "11" label={`18.  ${artistNames[17]}`} delay='3.4' song={topSongs[17]} artist={artists[17]} clickHandler={handleClick}/>
+            <PopCircle x = '88' y = '10' size = "12" label={`19.  ${artistNames[18]}`} delay='3.5' song={topSongs[18]} artist={artists[18]} clickHandler={handleClick}/>
+            <PopCircle x = '91' y = '55' size = "10" label={`20.  ${artistNames[19]}`} delay='3.6' song={topSongs[19]} artist={artists[19]} clickHandler={handleClick}/>
         </div>
     );
 }
 
+function renderAnalysisContainer(tracksData){
+    
+    createRoot(document.querySelector('.analysis-container')).render(
+        <div>
+
+        </div>
+    )
+}
+
+async function getAudioFeatures(tracksData, accessToken){
+    try{
+        const trackIds = [];
+        tracksData.items.forEach(track => {
+            trackIds.push(track.id);
+        });
+        const trackIdsString = trackIds.join(',');
+        const apiUrl = `https://api.spotify.com/v1/audio-features?ids=${trackIdsString}`;
+        return fetch(apiUrl, {
+            method: 'GET', 
+            headers: {
+                Authorization: 'Bearer ' + accessToken, 
+            }
+        })
+    }
+    catch (error){
+        console.error('Error retrieving audio features', error);
+    }
+}
+
 async function playTrack(accessToken, track, deviceId){
     try{
-        console.log(track.uri);
         const duration = Math.floor((track.duration_ms)/3);
         return fetch('https://api.spotify.com/v1/me/player/play?device_id='+deviceId, {
             method: 'PUT', 

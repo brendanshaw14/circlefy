@@ -57,12 +57,19 @@
 :root {
     background-color: #151515;
 }
-  
+
+.fade-circle:hover{
+    transform: scale(1.1) !important;
+    cursor: pointer;
+}
+
 /* Login Section */
 .home {
     background: linear-gradient(to bottom right, #656565, #3a3a3a00, #000000);
     font-family: 'Circle Black';
     overflow-x: hidden;
+    
+
   
     /* Header Section */
     .header-container {
@@ -98,7 +105,7 @@
             position: relative;
             width: 100%;
             height: 80vh;
-            margin-bottom: 5vh;
+            margin-bottom: 10vh;
         }
     
         /* container for the tracks section */
