@@ -15,7 +15,6 @@ let trackData;
 let deviceId;
 
 
-
 const Home = () => {
 
     const handleClick = (song) => {
@@ -26,6 +25,7 @@ const Home = () => {
         () => renderTracksContainer2(trackData, handleClick), 
         () => renderArtistsContainer(artistData, accessToken, handleClick), 
         () => renderArtistsContainer2(artistData, accessToken, handleClick),
+        () => renderAnalysisContainer(trackData, accessToken), 
     ];
     const [accessToken, setAccessToken] = useState(null);
     const [playerActivated, setPlayerActivated] = useState(null);
@@ -55,6 +55,7 @@ const Home = () => {
             trackData = tracksData;
             console.log(profileData, artistData, trackData);
             renderIntroContainer(artistData, username, accessToken, handleClick);
+            getAudioFeatures(tracksData, accessToken);
         })
         .catch(error => {
             console.error('Error fetching data');
@@ -394,15 +395,15 @@ async function renderArtistsContainer2(artistData, accessToken, handleClick){
     );
 }
 
-function renderAnalysisContainer(tracksData){
-    
+// eslint-disable-next-line
+function renderAnalysisContainer(tracksData, accessToken){
     createRoot(document.querySelector('.analysis-container')).render(
         <div>
-
         </div>
     )
 }
 
+// eslint-disable-next-line
 async function getAudioFeatures(tracksData, accessToken){
     try{
         const trackIds = [];
@@ -411,12 +412,14 @@ async function getAudioFeatures(tracksData, accessToken){
         });
         const trackIdsString = trackIds.join(',');
         const apiUrl = `https://api.spotify.com/v1/audio-features?ids=${trackIdsString}`;
-        return fetch(apiUrl, {
+        const response = await fetch(apiUrl, {
             method: 'GET', 
             headers: {
                 Authorization: 'Bearer ' + accessToken, 
             }
         })
+        const data = response.json();
+        console.log(data);
     }
     catch (error){
         console.error('Error retrieving audio features', error);
@@ -447,7 +450,6 @@ async function playTrack(accessToken, track, deviceId){
 
 }
 
-// eslint-disable-next-line
 async function getArtistTopSong(accessToken, artist){
     try{
         const url = 'https://api.spotify.com/v1/artists/'+artist.id+'/top-tracks?country=US';
@@ -466,12 +468,3 @@ async function getArtistTopSong(accessToken, artist){
 }
 
 
-/****Things to add: 
- * Valence: happiness
- * BPM??
- * Tags? 
- * Genres? 
- * Danceability?
- * 
- * 
- */    
