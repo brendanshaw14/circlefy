@@ -63,6 +63,10 @@
     cursor: pointer;
 }
 
+.pop-circle:hover{
+    transform: scale(1.1) !important;
+    cursor: pointer;
+}
 /* Login Section */
 .home {
     background: linear-gradient(to bottom right, #656565, #3a3a3a00, #000000);
@@ -124,7 +128,6 @@
             position: relative;
             width: 100%;
             height: 80vh;
-            //margin-top: 5vh;
         }    
 
         /* container for the tracks section */
@@ -136,6 +139,12 @@
             margin-top: 10vh;
         }       
 
+        @media (max-width: 767px) {
+            .tracks-container-2 {
+                margin-bottom: 5vh;
+                margin-top: 0px;
+            }
+        }
         /* container for the artists section */
         .artist-container{
             position: relative;
@@ -144,6 +153,12 @@
             margin-bottom: 5vh;
             margin-top: 10vh;
         }    
+        
+        @media (max-width: 767px) {
+            .artist-container{
+                margin-bottom: 0;
+            }
+        }
     
         /* container for the artists section */
         .artist-container-2{
@@ -279,6 +294,13 @@
             margin-right: 5px;
             width:2vw;
             height: auto;
+        }
+        @media (max-width: 767px) {
+            .github-icon,
+            .linkedIn-icon{
+                width: 2vh;
+                height: auto;
+            }
         }
     }
     }

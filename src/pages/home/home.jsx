@@ -357,7 +357,28 @@ function renderTracksContainer2(trackData, handleClick){
     const tracks = trackData.items.map(track => track); //save top artist images in array
     const songNames = trackData.items.map(track => track.name); //save top artist images in array
     const artistNames = trackData.items.map(track => track.artists[0]?.name || "Unknown Artist"); //save top artist images in array
+    const isMobile = window.innerWidth < 768;
     createRoot(document.querySelector('.tracks-container-2')).render(
+        isMobile ? (
+        <div>
+            <FadeCircle x = '50' y = '40' size = '30' color="#ff9f3d" text={`And some honorable mentions:`}/> 
+            <PopCircle x = '12' y = '10' size = "15" label={`6. ${songNames[5]}- ${artistNames[5]}`} delay='2.3' song={tracks[5]} clickHandler={handleClick}/>
+            <PopCircle x = '12' y = '55' size = "14" label={`7. ${songNames[6]}- ${artistNames[6]}`} delay='2.3' song={tracks[6]} clickHandler={handleClick}/>
+            <PopCircle x = '15' y = '32' size = "12" label={`8. ${songNames[7]}- ${artistNames[7]}`} delay='2.4' song={tracks[7]} clickHandler={handleClick}/>
+            <PopCircle x = '35' y = '60' size = "11" label={`9. ${songNames[8]}- ${artistNames[8]}`} delay='2.5' song={tracks[8]} clickHandler={handleClick}/>
+            <PopCircle x = '15' y = '80' size = "13" label={`10. ${songNames[9]}- ${artistNames[9]}`} delay='2.6' song={tracks[9]} clickHandler={handleClick}/>
+            <PopCircle x = '49' y = '77' size = "15" label={`11. ${songNames[10]}- ${artistNames[10]}`} delay='2.7' song={tracks[10]} clickHandler={handleClick}/>
+            <PopCircle x = '38' y = '12' size = "10" label={`12. ${songNames[11]}- ${artistNames[11]}`} delay='2.8' song={tracks[11]} clickHandler={handleClick}/>
+            <PopCircle x = '63' y = '8' size = "13" label={`13. ${songNames[12]}- ${artistNames[12]}`} delay='2.9' song={tracks[12]} clickHandler={handleClick}/>
+            <PopCircle x = '30' y = '95' size = "8" label={`14. ${songNames[13]}- ${artistNames[13]}`} delay='3.0' song={tracks[13]} clickHandler={handleClick}/>
+            <PopCircle x = '72' y = '60' size = "13" label={`15. ${songNames[14]}- ${artistNames[14]}`} delay='3.1' song={tracks[14]} clickHandler={handleClick}/>
+            <PopCircle x = '69' y = '95' size = "9" label={`16. ${songNames[15]}- ${artistNames[15]}`} delay='3.2' song={tracks[15]} clickHandler={handleClick}/>
+            <PopCircle x = '88' y = '81' size = "12" label={`17. ${songNames[16]}- ${artistNames[16]}`} delay='3.3' song={tracks[16]} clickHandler={handleClick}/>
+            <PopCircle x = '84' y = '38' size = "11" label={`18. ${songNames[17]}- ${artistNames[17]}`} delay='3.4' song={tracks[17]} clickHandler={handleClick}/>
+            <PopCircle x = '83' y = '18' size = "12" label={`19. ${songNames[18]}- ${artistNames[18]}`} delay='3.5' song={tracks[18]} clickHandler={handleClick}/>
+            <PopCircle x = '91' y = '55' size = "7" label={`20. ${songNames[19]}- ${artistNames[19]}`} delay='3.6' song={tracks[19]} clickHandler={handleClick}/>
+        </div>
+        ):(
         <div>
             <FadeCircle x = '50' y = '25' size = '30' color="#ff9f3d" text={`And some honorable mentions:`}/> 
             <PopCircle x = '12' y = '10' size = "15" label={`6. ${songNames[5]}- ${artistNames[5]}`} delay='2.3' song={tracks[5]} clickHandler={handleClick}/>
@@ -376,13 +397,25 @@ function renderTracksContainer2(trackData, handleClick){
             <PopCircle x = '88' y = '10' size = "12" label={`19. ${songNames[18]}- ${artistNames[18]}`} delay='3.5' song={tracks[18]} clickHandler={handleClick}/>
             <PopCircle x = '91' y = '55' size = "10" label={`20. ${songNames[19]}- ${artistNames[19]}`} delay='3.6' song={tracks[19]} clickHandler={handleClick}/>
         </div>
+        )
     );
 }
 
 //renders the components of the artists container
 async function renderArtistsContainer(artistData, accessToken, handleClick){
     const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
+    const isMobile = window.innerWidth < 768;
     createRoot(document.querySelector('.artist-container')).render(
+        isMobile ? (
+        <div>
+            <FadeCircle x = '35' y = '15' size = '30' color="#ff59b5" text={`Now on to your favorite artists: Here's who you had on repeat.`}/> 
+            <PopCircle x='70' y='38' size='28' label={`1. ${artistData.items[0].name}`} delay='5.5' artist={artistData.items[0]} song={topSongs[0]} clickHandler={handleClick}/> 
+            <PopCircle x='32' y='75' size='25' label={`2. ${artistData.items[1].name}`} delay='4.5' artist={artistData.items[1]} song={topSongs[1]} clickHandler={handleClick}/> 
+            <PopCircle x='20' y='44' size='20' label={`3. ${artistData.items[2].name}`} delay='3.5' artist={artistData.items[2]} song={topSongs[2]} clickHandler={handleClick}/> 
+            <PopCircle x='83' y='75' size='15' label={`4. ${artistData.items[3].name}`} delay='2.5' artist={artistData.items[3]} song={topSongs[3]} clickHandler={handleClick}/> 
+            <PopCircle x='75' y='0' size='13'  label={`5. ${artistData.items[4].name}`} delay='1.5' artist={artistData.items[4]} song={topSongs[4]} clickHandler={handleClick}/> 
+        </div>
+        ):(
         <div>
             <FadeCircle x = '50' y = '15' size = '30' color="#ff59b5" text={`Now on to your favorite artists: Here's who you had on repeat.`}/> 
             <PopCircle x = '10' y = '75' size = '15' label={`1. ${artistData.items[0].name}`} delay='5.5' artist={artistData.items[0]} song={topSongs[0]} clickHandler={handleClick}/> 
@@ -391,6 +424,7 @@ async function renderArtistsContainer(artistData, accessToken, handleClick){
             <PopCircle x = '70' y = '75' size = '15' label={`4. ${artistData.items[3].name}`} delay='2.5' artist={artistData.items[3]} song={topSongs[3]} clickHandler={handleClick}/> 
             <PopCircle x = '90' y = '75' size = '15' label={`5. ${artistData.items[4].name}`} delay='1.5' artist={artistData.items[4]} song={topSongs[4]} clickHandler={handleClick}/> 
         </div>
+        )
     );
 }
 
@@ -399,7 +433,29 @@ async function renderArtistsContainer2(artistData, accessToken, handleClick){
     const artists = artistData.items.map(artist => artist); //save top artist images in array
     const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
     const artistNames = artistData.items.map(artist => artist.name || "Unknown Artist"); //save top artist images in array
+    const isMobile = window.innerWidth < 768;
     createRoot(document.querySelector('.artist-container-2')).render(
+    isMobile ? (
+        <div>
+        <FadeCircle x = '50' y = '40' size = '30' color="#399fec" text={`And a few others...`}/> 
+        <PopCircle x = '12' y = '10' size = "15" label={`6. ${artistNames[5]}`} delay='2.3' song={topSongs[5]} artist={artists[5]} clickHandler={handleClick}/>
+        <PopCircle x = '12' y = '55' size = "14" label={`7.  ${artistNames[6]}`} delay='2.3' song={topSongs[6]} artist={artists[6]} clickHandler={handleClick}/>
+        <PopCircle x = '15' y = '32' size = "12" label={`8.  ${artistNames[7]}`} delay='2.4' song={topSongs[7]} artist={artists[7]} clickHandler={handleClick}/>
+        <PopCircle x = '35' y = '60' size = "11" label={`9.  ${artistNames[8]}`} delay='2.5' song={topSongs[8]} artist={artists[8]} clickHandler={handleClick}/>
+        <PopCircle x = '15' y = '80' size = "13" label={`10.  ${artistNames[9]}`} delay='2.6' song={topSongs[9]} artist={artists[9]} clickHandler={handleClick}/>
+        <PopCircle x = '49' y = '77' size = "15" label={`11.  ${artistNames[10]}`} delay='2.7' song={topSongs[10]} artist={artists[10]} clickHandler={handleClick}/>
+        <PopCircle x = '38' y = '12' size = "10" label={`12.  ${artistNames[11]}`} delay='2.8' song={topSongs[11]} artist={artists[11]} clickHandler={handleClick}/>
+        <PopCircle x = '63' y = '8' size = "13" label={`13.  ${artistNames[12]}`} delay='2.9' song={topSongs[12]} artist={artists[12]} clickHandler={handleClick}/>
+        <PopCircle x = '30' y = '95' size = "8" label={`14.  ${artistNames[13]}`} delay='3.0' song={topSongs[13]} artist={artists[13]} clickHandler={handleClick}/>
+        <PopCircle x = '72' y = '60' size = "13" label={`15.  ${artistNames[14]}`} delay='3.1' song={topSongs[14]} artist={artists[14]} clickHandler={handleClick}/>
+        <PopCircle x = '69' y = '95' size = "9" label={`16.  ${artistNames[15]}`} delay='3.2' song={topSongs[15]} artist={artists[15]} clickHandler={handleClick}/>
+        <PopCircle x = '88' y = '81' size = "12" label={`17.  ${artistNames[16]}`} delay='3.3' song={topSongs[16]} artist={artists[16]} clickHandler={handleClick}/>
+        <PopCircle x = '84' y = '38' size = "11" label={`18.  ${artistNames[17]}`} delay='3.4' song={topSongs[17]} artist={artists[17]} clickHandler={handleClick}/>
+        <PopCircle x = '83' y = '18' size = "12" label={`19.  ${artistNames[18]}`} delay='3.5' song={topSongs[18]} artist={artists[18]} clickHandler={handleClick}/>
+        <PopCircle x = '91' y = '55' size = "7" label={`20.  ${artistNames[19]}`} delay='3.6' song={topSongs[19]} artist={artists[19]} clickHandler={handleClick}/>
+        </div>
+        
+    ):(
         <div>
             <FadeCircle x = '50' y = '25' size = '30' color="#399fec" text={`And a few others...`}/> 
             <PopCircle x = '12' y = '10' size = "15" label={`6. ${artistNames[5]}`} delay='2.3' song={topSongs[5]} artist={artists[5]} clickHandler={handleClick}/>
@@ -418,6 +474,7 @@ async function renderArtistsContainer2(artistData, accessToken, handleClick){
             <PopCircle x = '88' y = '10' size = "12" label={`19.  ${artistNames[18]}`} delay='3.5' song={topSongs[18]} artist={artists[18]} clickHandler={handleClick}/>
             <PopCircle x = '91' y = '55' size = "10" label={`20.  ${artistNames[19]}`} delay='3.6' song={topSongs[19]} artist={artists[19]} clickHandler={handleClick}/>
         </div>
+    )
     );
 }
 
