@@ -87,7 +87,14 @@
             font-size: 18vh;
             color: rgb(255, 255, 255);
         }
+        /* Adjust font size for screens narrower than 768px */
+        @media (max-width: 767px) {
+            .title {
+                font-size: 8vh; /* Change to your desired font size for smaller screens */
+            }
+        }
     }
+    
   
     /* Body Section */
     .body-container {
@@ -107,7 +114,11 @@
             height: 80vh;
             margin-bottom: 10vh;
         }
-    
+        @media (max-width: 767px) {
+            .intro-container {
+                margin-bottom: 0px;
+            }
+        }
         /* container for the tracks section */
         .tracks-container{
             position: relative;

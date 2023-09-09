@@ -55,7 +55,6 @@ const Home = () => {
             trackData = tracksData;
             console.log(profileData, artistData, trackData);
             renderIntroContainer(artistData, username, accessToken, handleClick);
-            getAudioFeatures(tracksData, accessToken);
         })
         .catch(error => {
             console.error('Error fetching data');
@@ -286,8 +285,22 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
     try{
         const artists = artistData.items.map(artist => artist); 
         const topSongs = await Promise.all(artistData.items.map(artist => getArtistTopSong(accessToken, artist)));
+        const isMobile = window.innerWidth < 768;
         createRoot(document.querySelector('.intro-container')).render(
-
+            isMobile ? (
+            <div>
+                <FadeCircle x = '40' y = '30' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
+                <FadeCircle x = '10' y = '5' size = "18" artist={artists[7]} song={topSongs[7]} delay='0.5' clickHandler={handleClick}/>
+                <FadeCircle x = '13' y = '83' size = "9" artist={artists[2]} song={topSongs[2]} delay='0.6' clickHandler={handleClick}/>
+                <FadeCircle x = '12' y = '50' size = "8" artist={artists[5]} song={topSongs[5]} delay='0.7' clickHandler={handleClick}/>
+                <FadeCircle x = '25' y = '65' size = "23" artist={artists[0]} song={topSongs[0]} delay='0.8'clickHandler={handleClick}/>
+                <FadeCircle x = '55' y = '80' size = "12" artist={artists[14]} song={topSongs[14]} delay='0.9' clickHandler={handleClick}/>
+                <FadeCircle x = '90' y = '35' size = "13"artist={artists[4]} song={topSongs[4]} delay='1.0' clickHandler={handleClick}/>
+                <FadeCircle x = '64' y = '8' size = "8" artist={artists[8]} song={topSongs[8]} delay='1.1' clickHandler={handleClick}/>
+                <FadeCircle x = '90' y = '12' size = "20" artist={artists[1]} song={topSongs[1]} delay='1.2' clickHandler={handleClick}/>
+                <FadeCircle x = '75' y = '60' size = "27" color="#399fec" text={"Tap circles to hear your music. Scroll down to begin"} delay='1.7'/>
+            </div>
+            ) : (
             <div>
                 <FadeCircle x = '40' y = '45' size = '40' color="#a8df85" text={`Hello, ${username}`} /> 
                 <FadeCircle x = '10' y = '10' size = "18" artist={artists[7]} song={topSongs[7]} delay='0.5' clickHandler={handleClick}/>
@@ -299,7 +312,8 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
                 <FadeCircle x = '64' y = '15' size = "8" artist={artists[8]} song={topSongs[8]} delay='1.1' clickHandler={handleClick}/>
                 <FadeCircle x = '90' y = '15' size = "15" artist={artists[1]} song={topSongs[1]} delay='1.2' clickHandler={handleClick}/>
                 <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music. Scroll down to begin"} delay='1.7'/>
-            </div>, 
+            </div>
+            ) 
         );
     }
     catch (error){
@@ -310,7 +324,18 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
 //renders the components of the tracks container
 function renderTracksContainer(trackData, handleClick) {
     try {
+        const isMobile = window.innerWidth < 768;
         createRoot(document.querySelector('.tracks-container')).render(
+            isMobile ? (
+            <div>
+                <FadeCircle x="35" y="10" size="30" color="#ffe80b" text={`This month, your top tracks were:`} />
+                <PopCircle x="70" y="38" size="28" label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay="7" song={trackData.items[0]} clickHandler={handleClick}/>
+                <PopCircle x="32" y="75" size="25" label={`2. ${trackData.items[1].name}- ${trackData.items[1].artists[0].name}`} delay="6" song={trackData.items[1]} clickHandler={handleClick}/>
+                <PopCircle x="20" y="37" size="20" label={`3. ${trackData.items[2].name}- ${trackData.items[2].artists[0].name}`} delay="5" song={trackData.items[2]} clickHandler={handleClick}/>
+                <PopCircle x="83" y="75" size="15" label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay="4" song={trackData.items[3]} clickHandler={handleClick}/>
+                <PopCircle x="75" y="0" size="13" label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay="3" song={trackData.items[4]} clickHandler={handleClick}/>
+            </div>
+            ) : (
             <div>
                 <FadeCircle x="50" y="15" size="30" color="#ffe80b" text={`This month, your top tracks were:`} />
                 <PopCircle x="10" y="70" size="15" label={`1. ${trackData.items[0].name}- ${trackData.items[0].artists[0].name}`} delay="7" song={trackData.items[0]} clickHandler={handleClick}/>
@@ -319,6 +344,7 @@ function renderTracksContainer(trackData, handleClick) {
                 <PopCircle x="70" y="70" size="15" label={`4. ${trackData.items[3].name}- ${trackData.items[3].artists[0].name}`} delay="4" song={trackData.items[3]} clickHandler={handleClick}/>
                 <PopCircle x="90" y="70" size="15" label={`5. ${trackData.items[4].name}- ${trackData.items[4].artists[0].name}`} delay="3" song={trackData.items[4]} clickHandler={handleClick}/>
             </div>
+            )
         );
     } catch (error) {
         console.log(error);
@@ -418,8 +444,7 @@ async function getAudioFeatures(tracksData, accessToken){
                 Authorization: 'Bearer ' + accessToken, 
             }
         })
-        const data = response.json();
-        console.log(data);
+        return response.json();
     }
     catch (error){
         console.error('Error retrieving audio features', error);
