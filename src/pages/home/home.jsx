@@ -11,7 +11,7 @@ const redirectUri = 'http://localhost:3000/home/';
 
 let username; 
 let artistData;
-let tracksData;
+let trackData;
 let deviceId;
 
 
@@ -22,8 +22,8 @@ const Home = () => {
         playTrack(accessToken, song, deviceId)
     }
     const renderFunctions = [
-        () => renderTracksContainer(tracksData, handleClick), 
-        () => renderTracksContainer2(tracksData, handleClick), 
+        () => renderTracksContainer(trackData, handleClick), 
+        () => renderTracksContainer2(trackData, handleClick), 
         () => renderArtistsContainer(artistData, accessToken, handleClick), 
         () => renderArtistsContainer2(artistData, accessToken, handleClick),
     ];
@@ -44,32 +44,21 @@ const Home = () => {
     let maxIndex = 0;
     //call the init function to check and update the access token, then use the promise to fetch and store data  
     if (accessToken && (!playerActivated)) {
-        getProfile(accessToken)
-        .then(data => {
-            username = data.display_name;
-        })
-        .catch(error => {
-            console.error('Error fetching profile data:', error);
-        });
-        getArtists(accessToken)
-        .then(data => {
-            artistData = data;
-            console.log(artistData);
+        const profilePromise = getProfile(accessToken);
+        const artistsPromise = getArtists(accessToken);
+        const tracksPromise = getTracks(accessToken);
+
+        Promise.all([profilePromise, artistsPromise, tracksPromise])
+        .then(([profileData, artistsData, tracksData]) => {
+            username = profileData.display_name;
+            artistData = artistsData;
+            trackData = tracksData;
+            console.log(profileData, artistData, trackData);
             renderIntroContainer(artistData, username, accessToken, handleClick);
         })
         .catch(error => {
-            console.error('Error fetching artist data:', error);
+            console.error('Error fetching data');
         });
-        getTracks(accessToken)
-        .then(data => {
-            tracksData = data;
-            console.log(tracksData);
-        })
-        .catch(error => {
-            console.error('Error fetching track data:', error);
-        });
-
-          
     }
     if (accessToken){
         //scroll handling function: determine which container is rendered by dividing scroll distance by container height
@@ -82,7 +71,7 @@ const Home = () => {
                 renderFunctions[index-1]();
                 if (playerActivated){
                     console.log("Play track: " + index-1);
-                    playTrack(accessToken, tracksData.items[index-1], deviceId);
+                    playTrack(accessToken, trackData.items[index-1], deviceId);
                 }
             }
         }); 
@@ -100,7 +89,7 @@ const Home = () => {
 
     useEffect(() => {
         if (playerActivated){
-            playTrack(accessToken, tracksData.items[9], deviceId);
+            playTrack(accessToken, trackData.items[9], deviceId);
         }
         else{
             console.log("player not activated");
@@ -308,7 +297,7 @@ async function renderIntroContainer(artistData, username, accessToken, handleCli
                 <FadeCircle x = '90' y = '92' size = "15"artist={artists[4]} song={topSongs[4]} delay='1.0' clickHandler={handleClick}/>
                 <FadeCircle x = '64' y = '15' size = "8" artist={artists[8]} song={topSongs[8]} delay='1.1' clickHandler={handleClick}/>
                 <FadeCircle x = '90' y = '15' size = "15" artist={artists[1]} song={topSongs[1]} delay='1.2' clickHandler={handleClick}/>
-                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music"} delay='1.7'/>
+                <FadeCircle x = '75' y = '55' size = "27" color="#399fec" text={"Tap circles to hear your music. Scroll down to begin"} delay='1.7'/>
             </div>, 
         );
     }
