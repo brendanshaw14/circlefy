@@ -68,7 +68,7 @@ const Login = () => {
                 <FadeCircle x = '55' y = '80' size = "12" image="images/TravisScott-Astroworld.png"/>
                 <FadeCircle x = '79' y = '55' size = '20' color="#ff59b5" text="Login with your account below"/> 
                 <FadeCircle x = '12' y = '75' size = '15' color="#399fec" text="" />
-                <FadeCircle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more 4" />
+                <FadeCircle x = '85' y = '10' size = '15' color="#a8df85" text="See top tracks, artists, and more" />
                 <FadeCircle x = '70' y = '95' size = '10' color="rgb(233, 215, 61)"/>
             </div>
             <div className="button-container">

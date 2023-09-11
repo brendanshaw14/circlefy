@@ -34,10 +34,10 @@ const Home = () => {
         window.scrollTo(0, 0);
         init()
             .then((accessToken) => {
-            setAccessToken(accessToken);
+                setAccessToken(accessToken);
             })
             .catch((error) => {
-            console.error('Error during initialization:', error);
+                console.error('Error during initialization:', error);
             });
         
     }, []);
@@ -143,15 +143,12 @@ export default Home
 async function init(){
         let accessToken = localStorage.getItem('access_token');
         if (!accessToken){
-            //console.log("no access token, getting token");
             accessToken = await getAccessToken();
         }
         else if (!verifyAccessToken(accessToken)){
-            //console.log("token expired: refreshing token")
             accessToken = await refreshAccessToken();
         }
         else{
-            //console.log("token exists and was validated")
         }
         return accessToken
 }
