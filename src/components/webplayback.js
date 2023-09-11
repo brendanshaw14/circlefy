@@ -18,9 +18,9 @@ function WebPlayback({ accessToken, onDeviceLoad, onPlayerActivation }) {
       const script = document.createElement('script');
       script.src = 'https://sdk.scdn.co/spotify-player.js';
       script.async = true;
-
+      //load the script
       document.head.appendChild(script);
-
+      // initialize the device, add listeners
       window.onSpotifyWebPlaybackSDKReady = () => {
         const player = new window.Spotify.Player({
           name: 'Circlefy',

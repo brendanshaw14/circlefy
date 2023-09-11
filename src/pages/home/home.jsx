@@ -20,16 +20,16 @@ const Home = () => {
     const handleClick = (song) => {
         playTrack(accessToken, song, deviceId)
     }
+    //function array to be called based on scroll and render each component. 
     const renderFunctions = [
         () => renderTracksContainer(trackData, handleClick), 
         () => renderTracksContainer2(trackData, handleClick), 
         () => renderArtistsContainer(artistData, accessToken, handleClick), 
         () => renderArtistsContainer2(artistData, accessToken, handleClick),
-        () => renderAnalysisContainer(trackData, accessToken), 
     ];
     const [accessToken, setAccessToken] = useState(null);
     const [playerActivated, setPlayerActivated] = useState(null);
-
+    // initial render function: sets access token
     useEffect(() => {
         window.scrollTo(0, 0);
         init()
@@ -47,7 +47,7 @@ const Home = () => {
         const profilePromise = getProfile(accessToken);
         const artistsPromise = getArtists(accessToken);
         const tracksPromise = getTracks(accessToken);
-
+        //fetch all the data, then render the intro container and save the data
         Promise.all([profilePromise, artistsPromise, tracksPromise])
         .then(([profileData, artistsData, tracksData]) => {
             username = profileData.display_name;
@@ -60,6 +60,7 @@ const Home = () => {
             console.error('Error fetching data');
         });
     }
+    //scroll mechanism
     if (accessToken){
         //scroll handling function: determine which container is rendered by dividing scroll distance by container height
         window.addEventListener('scroll', () => {
@@ -76,17 +77,15 @@ const Home = () => {
             }
         }); 
     }
-
+    //saves the webplayer's device ID when it loads
     const handleIdLoad = (newDeviceId) => {
         deviceId = newDeviceId; 
     };
-
+    //saves the player's activation status when the user activates it.
     const onPlayerActivation = (activated) => {
         setPlayerActivated(activated); 
     };
-
-    
-
+    //when playerActivated changes, start playing the default song. 
     useEffect(() => {
         if (playerActivated){
             playTrack(accessToken, trackData.items[9], deviceId);
@@ -475,14 +474,8 @@ async function renderArtistsContainer2(artistData, accessToken, handleClick){
     );
 }
 
-// eslint-disable-next-line
-function renderAnalysisContainer(tracksData, accessToken){
-    createRoot(document.querySelector('.analysis-container')).render(
-        <div>
-        </div>
-    )
-}
 
+//function to retrieve audio features-- not used
 // eslint-disable-next-line
 async function getAudioFeatures(tracksData, accessToken){
     try{
@@ -505,6 +498,7 @@ async function getAudioFeatures(tracksData, accessToken){
     }
 }
 
+//plays the given track on the player 
 async function playTrack(accessToken, track, deviceId){
     try{
         const duration = Math.floor((track.duration_ms)/3);
@@ -529,6 +523,7 @@ async function playTrack(accessToken, track, deviceId){
 
 }
 
+// returns the song object of the input artist's most popular song
 async function getArtistTopSong(accessToken, artist){
     try{
         const url = 'https://api.spotify.com/v1/artists/'+artist.id+'/top-tracks?country=US';
