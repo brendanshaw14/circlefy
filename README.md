@@ -111,7 +111,32 @@ On the home page, I used a similar aesthetic, but instead used the circle compon
 
 The page appears similarly to the login page, but instead of pre-determined art, it displays the artist profile photos of some of the user's top artists, as well as their username. 
 
-As you scroll down the page, more elements appear in their containers as you reach them, for example holding the user's top tracks or top artists of the month. I did this by creating an array of functions that would use the React `createRoot` method to render the components in their respective containers. As the user scrolls down the page, the total scroll distance is used to calculate which container is on screen, and its corresponding rendering function is called. Each function ultimately takes data repsonses from the API as input and then uses React's `createRoot` method to render the components storing the data into their containers accordingly. Here are a few of the containers on display: 
+As you scroll down the page, more elements appear in their containers as you reach them, for example holding the user's top tracks or top artists of the month. I did this by creating an array of functions that would use the React `createRoot` method to render the components in their respective containers. As the user scrolls down the page, the total scroll distance is used to calculate which container is on screen, and its corresponding rendering function is called. The mechanism works as follows (not including function definitions-- see `home.jsx`)
+```
+    const renderFunctions = [
+        () => renderTracksContainer(trackData, handleClick), 
+        () => renderTracksContainer2(trackData, handleClick), 
+        () => renderArtistsContainer(artistData, accessToken, handleClick), 
+        () => renderArtistsContainer2(artistData, accessToken, handleClick),
+    ];
+```
+
+```
+window.addEventListener('scroll', () => {
+    const scrolly = window.scrollY;
+    const windowHeight = window.innerHeight;
+    const index = Math.floor((scrolly+(windowHeight*0.3))/(windowHeight*0.9));
+    if (index > maxIndex){
+        maxIndex = index;
+        renderFunctions[index-1]();
+        if (playerActivated){
+            console.log("Play track: " + index-1);
+            playTrack(accessToken, trackData.items[index-1], deviceId);
+        }
+    }
+}); 
+```
+Each function ultimately takes data repsonses from the API as input and then uses React's `createRoot` method to render the components storing the data into their containers accordingly. Here are a few of the containers on display: 
 
 ![image](/screenshots/home-tracks1.png)
 ![image](/screenshots/home-tracks2.png)
@@ -125,9 +150,50 @@ These components took a fair amount of time to create, mainly because I wanted t
 I also took some time to make the device mobile friendly. Since the circle positions were hardcoded within the container, some issues occured when significant changes to the aspect ratio of the screen occurred without corresponding size and spacing changes to the circles. Accordlingly, I just used a CSS width threshold to determine which components to render, and rewrote the original components but in different locations to customize the mobile display. 
 ## Playback 
 
-After implementing the authentication, data fetching, and component rendering, I decided to add audio playback features to the site similar to Spotify's yearly wrapped. There is a Spotify web playback SDK through the Spotify developer's page, but unfortunately it needs to be loaded as a script in the page, so I had to make a separate react component for it. This is the `WebPlayback` component-- which I coded to load the script individually and initialize the player. Loading the player and activating it was pretty complicated, mainly because I had to embedd it into the asynchronous logic once again. The script needs to be loaded, the player needs to be initialized, and then event listeners need to be configured to handle any updates and errors. This created a lot of issues- and I may have done this somewhat inefficiently- but the best method I could figure out was to pass functions to the WebPlayback component that would use the `useState` hook in my main app to trigger re-renders when necessary. 
+After implementing the authentication, data fetching, and component rendering, I decided to add audio playback features to the site similar to Spotify's yearly wrapped. There is a Spotify web playback SDK through the Spotify developer's page, but unfortunately it needs to be loaded as a script in the page, so I had to make a separate react component for it. This is the `WebPlayback` component-- which I coded to load the script individually and initialize the player. 
+```
+if (!window.Spotify) {
+    const script = document.createElement('script');
+    script.src = 'https://sdk.scdn.co/spotify-player.js';
+    script.async = true;
+    document.head.appendChild(script);
+```
+Loading the player and activating it was pretty complicated, mainly because I had to embedd it into the asynchronous logic once again. The script needs to be loaded, the player needs to be initialized, and then event listeners need to be configured to handle any updates and errors.
+```
+window.onSpotifyWebPlaybackSDKReady = () => {
+    const player = new window.Spotify.Player({
+        name: 'Circlefy',
+        getOAuthToken: (cb) => {
+        cb(accessToken);
+        },
+        volume: 0.5
+    });
+    playerInstanceRef.current = player; // Assign to the ref
 
-The first challenge I had to deal with was initiating the player-- because most browsers don't allow for automatic playback from sites, I had to have the users initiate playback interactively. To do this, I decided to code a separate component for the webplayer that the user can toggle to initiate playback. I had to then render the component conditionally based on whether or not the player was activated, displaying a message urging users to click the button if not and displaying information about the song if so. This took a bit of work again due to the asynchronous nature of the coding, but I figured it out-- see both `home.jsx` and `webplayback.js` to see how. 
+    playerInstanceRef.current.addListener('ready', ({ device_id }) => {
+        //console.log('Ready with Device ID', device_id);
+        onDeviceLoad(device_id);
+    });
+
+    playerInstanceRef.current.addListener('not_ready', ({ device_id }) => {
+        //console.log('Device ID has gone offline', device_id);
+    });
+
+    playerInstanceRef.current.addListener('player_state_changed', (state) => {
+        if (!state) return;
+        setCurrentTrack(state.track_window.current_track);
+        setIsPaused(state.paused);
+        playerInstanceRef.current.getCurrentState().then( state => { ;
+        (!state)? setIsActive(false) : setIsActive(true) 
+    });
+    });
+    playerInstanceRef.current.connect();
+
+};
+```
+ This created a lot of issues- and I may have done this somewhat inefficiently- but the best method I could figure out was to pass functions to the WebPlayback component that would use the `useState` hook in my main app to trigger re-renders when necessary (notice the `setCurrentTrack` and `setIsPaused` functions after the player state changes). 
+
+The first challenge I had to deal with was initiating the player-- because most browsers don't allow for automatic playback from sites, I had to have the users initiate playback interactively. To do this, I decided to code a separate component for the webplayer that the user can toggle to initiate playback. I had to then render the component conditionally based on whether or not the player was activated, displaying a message urging users to click the button if not and displaying information about the song if so. This took a bit of work again due to the asynchronous nature of the coding, but I figured it out-- see both `home.jsx` and `webplayback.js` to see the full code. 
 
 This is what the player looks like upon load:
 ![image](/screenshots/player-inactive.png)
